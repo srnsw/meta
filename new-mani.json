@@ -1,7 +1,8 @@
-"access": [
+"accessRules": [
     {
-        "date": "2100-12-12",
         "effect": "open",
+        "date": "2100-12-12",
+        "accessDirection": "",
         "basis": ""
     },
     {
@@ -15,8 +16,19 @@
         "date": "2001-12-12",
         "effect": "open",
         "patch": "xyz",
+        "accessDirection": "",
         "basis": ""
     }
+]
+
+"metadata":
+
+"texts": [
+    {}
+]
+
+"previews": [
+    {}
 ]
 
 
@@ -34,9 +46,8 @@
                         "premis:formatDesignation": "fmt/20"
                     },
                     "dct:format": "application/pdf",
-                    "srnsw:accessRule": {
-                        "srnsw:accessDirection": "1310",
-                        "srnsw:effect": "OPA"
+                    "srnsw:accessDirections": {
+                        "1310"
                     }
                 },
                 {

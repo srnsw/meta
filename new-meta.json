@@ -21,14 +21,11 @@
         "srnsw:authority": "DA48",
         "srnsw:class": "1.1.1.2"
     },
+    "srnsw:accessDirection": "1309",
     "dct:creator": {
         "@type": "srnsw:agency",
         "sdo:legalName": "Office of Fair Trading",
         "@id": "(placeholder for URI)"
-    },
-    "srnsw:accessRule": {
-        "srnsw:accessDirection": "1309",
-        "srnsw:effect": "Early"
     },
     "sdo:about": {
         "sdo:legalName": "Duntryleague Country Club",
