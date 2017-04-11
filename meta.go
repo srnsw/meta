@@ -53,7 +53,6 @@ func (m *Meta) Output(sample int, target string, actions ...Action) error {
 			return nil
 		}
 		meta, man, store := m.Metadata[v], m.Manifest[v], m.Store[v]
-
 		// make the output directory, which is an incrementing integer
 		out := filepath.Join(target, strconv.Itoa(i))
 		err := os.MkdirAll(out, os.ModePerm)
@@ -76,7 +75,7 @@ func (m *Meta) Output(sample int, target string, actions ...Action) error {
 		if err = ioutil.WriteFile(filepath.Join(out, "manifest.json"), j, os.ModePerm); err != nil {
 			return err
 		}
-
+		// finally, execute the actions
 		for _, a := range actions {
 			if err := a(out, v, meta, man, store); err != nil {
 				return err
