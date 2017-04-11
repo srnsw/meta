@@ -1,0 +1,53 @@
+{
+    "@context": {
+        "dc": "http://purl.org/dc/terms/",
+        "eac-cpf": "http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "nfo": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo/",
+        "ore": "http://www.openarchives.org/ore/0.9/jsonld",
+        "premis": "http://www.loc.gov/premis/rdf/v1",
+        "sdo": "http://schema.org/",
+        "srnsw": "http://srnswda.example",
+        "wiki": "https://www.wikidata.org/wiki/"
+    },
+    "@type": [
+        "premis:Object",
+        "srnsw:DigitalArchive"
+    ],
+    "dct:title": "Business Name Registration - Duntryleague Country Club",
+    "srnsw:series": 20564,
+    "dct:created": "01/01/1902",
+    "srnsw:disposalRule": {
+        "srnsw:authority": "DA48",
+        "srnsw:class": "1.1.1.2"
+    },
+    "dct:creator": {
+        "@type": "srnsw:agency",
+        "sdo:legalName": "Office of Fair Trading",
+        "@id": "(placeholder for URI)"
+    },
+    "srnsw:accessRule": {
+        "srnsw:accessDirection": "1309",
+        "srnsw:effect": "Early"
+    },
+    "sdo:about": {
+        "sdo:legalName": "Duntryleague Country Club",
+        "sdo:commencedTrading": "1000-01-01",
+        "sdo:ceasedTrading": "1999-03-29",
+        "srnsw:renewalDueDate": "1998-11-30",
+        "dct:identifier": {
+            "srnsw:registration_number": "A0369711",
+            "wiki:ABN": {
+                "@value": "Unknown",
+                "@id": "https://www.wikidata.org/wiki/Q4823913",
+                "sdo:sameAs": "https://en.wikipedia.org/wiki/Australian_Business_Number"
+            }
+        },
+        "srnsw:proprietor": [
+            {
+                "@type": "foaf:organisation",
+                "foaf:name": "The Orange Golf Club Ltd"
+            }
+        ]
+    },
+    

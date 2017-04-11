@@ -1,0 +1,105 @@
+"access": [
+    {
+        "date": "2100-12-12",
+        "effect": "open",
+        "basis": ""
+    },
+    {
+        "label": 1,
+        "date": "2000-12-12",
+        "effect": "publish",
+        "basis": ""
+    },
+    {
+        "label": 2,
+        "date": "2001-12-12",
+        "effect": "open",
+        "patch": "xyz",
+        "basis": ""
+    }
+]
+
+
+"versions": [
+        {
+            "version:srnsw": 0,
+            "ore:aggregates": [
+                {
+                    "nfo:fileName": "E:\\756\\A3609756.1",
+                    "@id": "",
+                    "@type": "",
+                    "nfo:fileSize": 37463,
+                    "premis:Format": {
+                        "premis:formatRegistry": "pronom",
+                        "premis:formatDesignation": "fmt/20"
+                    },
+                    "dct:format": "application/pdf",
+                    "srnsw:accessRule": {
+                        "srnsw:accessDirection": "1310",
+                        "srnsw:effect": "OPA"
+                    }
+                },
+                {
+                    "nfo:fileName": "E:\\771\\A1314771.1",
+                    "@id": "",
+                    "@type": "",
+                    "nfo:fileSize": 56899,
+                    "premis:Format": {
+                        "premis:formatRegistry": "pronom",
+                        "premis:formatDesignation": "fmt/20"
+                    },
+                    "dct:format": "application/pdf",
+                    "srnsw:accessRule": {
+                        "srnsw:accessDirection": "1310",
+                        "srnsw:effect": "OPA"
+                    }
+                },
+                {
+                    "nfo:fileName": "E:\\006\\A1305006.1",
+                    "@id": "",
+                    "@type": "",
+                    "nfo:fileSize": 41734,
+                    "premis:Format": {
+                        "premis:formatRegistry": "pronom",
+                        "premis:formatDesignation": "fmt/20"
+                    },
+                    "dct:format": "application/pdf",
+                    "srnsw:accessRule": {
+                        "srnsw:accessDirection": "1310",
+                        "srnsw:effect": "OPA"
+                    }
+                },
+                {
+                    "nfo:fileName": "E:\\054\\A805054.1",
+                    "@id": "",
+                    "@type": "",
+                    "nfo:fileSize": 42355,
+                    "premis:Format": {
+                        "premis:formatRegistry": "pronom",
+                        "premis:formatDesignation": "fmt/20"
+                    },
+                    "dct:format": "application/pdf",
+                    "srnsw:accessRule": {
+                        "srnsw:accessDirection": "1310",
+                        "srnsw:effect": "OPA"
+                    }
+                },
+                {
+                    "nfo:fileName": "E:\\955\\A1002955.1",
+                    "@id": "",
+                    "@type": "",
+                    "nfo:fileSize": 111541,
+                    "premis:Format": {
+                        "premis:formatRegistry": "pronom",
+                        "premis:formatDesignation": "fmt/20"
+                    },
+                    "dct:format": "application/pdf",
+                    "srnsw:accessRule": {
+                        "srnsw:accessDirection": "1310",
+                        "srnsw:effect": "OPA"
+                    }
+                }
+            ]
+        }
+    ]
+}
