@@ -7,16 +7,16 @@ type Metadata struct {
 	Creators      []Agent        `json:"creators,omitempty"`
 	Series        int            `json:"series"`
 	DisposalRules []DisposalRule `json:"disposalRules"`
-	Audio         MediaFields    `json:"audio,omitempty"`
-	Video         MediaFields    `json:"video,omitempty"`
+	Audio         *MediaFields   `json:"audio,omitempty"`
+	Video         *MediaFields   `json:"video,omitempty"`
 }
 
 type MediaFields struct {
-	Language          string `json:lang,omitempty`
-	Duration          string `json:duration,omitempty`
-	Subtitles         string `json:subtitles,omitempty`
-	Director          string `json:director,omitempty`
-	ProductionCompany string `json:productionCompany,omitempty`
+	Language          string `json:"lang,omitempty"`
+	Duration          string `json:"duration,omitempty"`
+	Subtitles         string `json:"subtitles,omitempty"`
+	Director          string `json:"director,omitempty"`
+	ProductionCompany string `json:"productionCompany,omitempty"`
 }
 
 type DisposalRule struct {
