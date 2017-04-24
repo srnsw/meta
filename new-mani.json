@@ -1,12 +1,16 @@
 {
-"srnsw:accessRules": [
+"repo:accessRules": [
     {
-        "effect": "open",
+        "label": 0,
         "date": "2100-12-12",
-        "accessDirection": "",
-        "basis": "",
-        "metadataPatch": "",
-        "manifest": 0, // 0, 1 or 2 = full, exclude inaccessible files/versions, exclude fully
+        "level": "open",
+        "basis": {
+          "accessDirection": "xx",
+          "description": ""
+        }
+        "default": true,
+        "metadataPatch": 2,
+        "includeManifest": 0, // 0, 1 or 2 = full, exclude inaccessible files/versions, exclude fully
         "textTarget": "0/dkjfe.txt"
         "displayTarget": "1/preview.png"
         "displayType": "PNG"
@@ -14,7 +18,7 @@
     {
         "label": 1,
         "date": "2000-12-12",
-        "effect": "publish",
+        "level": "publish",
         "basis": ""
     },
     {
@@ -29,19 +33,17 @@
 "versions": [
         {
             "version:srnsw": 0,
-            "srnsw:accessRules": [1, 2], // inherited by version
+            "repo:accessRules": [1, 2], // inherited by version
             "ore:aggregates": [
                 {
                     "nfo:fileName": "E:\\756\\A3609756.1",
-                    "@id": "",
-                    "@type": "",
                     "nfo:fileSize": 37463,
                     "premis:Format": {
                         "premis:formatRegistry": "pronom",
                         "premis:formatDesignation": "fmt/20"
                     },
-                    "dct:format": "application/pdf",
-                    "srnsw:accessRules": [1, 2] // file level
+                    "dc:format": "application/pdf",
+                    "repo:accessRules": [1, 2] // file level
                 },
                 {
                     "nfo:fileName": "E:\\771\\A1314771.1",
