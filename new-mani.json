@@ -1,28 +1,28 @@
 {
 "repo:accessRules": [
     {
-        "label": 0,
+        "@id": "_:ar0",
         "date": "2100-12-12",
-        "level": "open",
+        "default": true,
+        "publish": true,
         "basis": {
           "accessDirection": "xx",
           "description": ""
-        }
-        "default": true,
+        },
         "metadataPatch": 2,
-        "includeManifest": 0, // 0, 1 or 2 = full, exclude inaccessible files/versions, exclude fully
-        "textTarget": "0/dkjfe.txt"
-        "displayTarget": "1/preview.png"
+        "includeManifest": true,
+        "textTarget": "0/dkjfe.txt",
+        "displayTarget": "1/preview.png",
         "displayType": "PNG"
     },
     {
-        "label": 1,
+        "@id": "_:ar1",
         "date": "2000-12-12",
         "level": "publish",
         "basis": ""
     },
     {
-        "label": 2,
+        "@id": "_:ar2",
         "date": "2001-12-12",
         "effect": "open",
         "patch": "xyz",
