@@ -48,10 +48,10 @@ func New(loaders ...Loader) (*Meta, error) {
 // Arbitrary actions based on that data can also be called by this function.
 func (m *Meta) Output(sample int, target string, actions ...Action) error {
 	for i, v := range m.Index {
-		sample--
 		if sample == 0 {
 			return nil
 		}
+		sample--
 		meta, man, store := m.Metadata[v], m.Manifest[v], m.Store[v]
 		// make the output directory, which is an incrementing integer
 		out := filepath.Join(target, strconv.Itoa(i))

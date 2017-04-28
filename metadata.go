@@ -16,6 +16,7 @@ type MediaFields struct {
 	Duration          string `json:"duration,omitempty"`
 	Subtitles         string `json:"subtitles,omitempty"`
 	Director          string `json:"director,omitempty"`
+	Actor             string `json:"actor,omitempty"`
 	ProductionCompany string `json:"productionCompany,omitempty"`
 }
 
