@@ -2,43 +2,63 @@
 "repo:accessRules": [
     {
         "@id": "_:ar0",
-        "date": "2100-12-12",
-        "default": true,
+        "repo:executeDate": "2100-12-12",
+        "repo:global": true,
+        "repo:publish": true,
+        "repo:basis": {
+          "repo:accessDirection": "xx",
+          "repo:accessDescription": ""
+        },
+        "repo:metadataPatch": 2,
+        "repo:fullManifest": true,
+        "repo:textTarget": "0/dkjfe.txt",
+        "repo:displayTarget": "1/preview.png",
+        "repo:displayType": "image/png"
+    },
+    {
+        "@id": "_:ar1",
+        "executeDate": "2000-12-12",
+        "global": false,
         "publish": true,
         "basis": {
           "accessDirection": "xx",
           "description": ""
         },
         "metadataPatch": 2,
-        "includeManifest": true,
-        "textTarget": "0/dkjfe.txt",
+        "fullManifest": false,
+        "textTarget": "1/bla.txt",
         "displayTarget": "1/preview.png",
-        "displayType": "PNG"
-    },
-    {
-        "@id": "_:ar1",
-        "date": "2000-12-12",
-        "level": "publish",
-        "basis": ""
+        "displayType": "image/png"
     },
     {
         "@id": "_:ar2",
-        "date": "2001-12-12",
-        "effect": "open",
-        "patch": "xyz",
-        "accessDirection": "",
-        "basis": ""
+        "executeDate": "2000-12-12",
+        "global": false,
+        "publish": false,
+        "basis": {
+          "accessDirection": "xx",
+          "description": ""
+        },
+        "fullManifest": true,
+        "textTarget": "2/foo.txt",
+        "displayTarget": "1/preview.png",
+        "displayType": "image/png"
     }
 ],
 "versions": [
         {
             "version:srnsw": 0,
-            "repo:accessRules": [1, 2], // inherited by version
+            "repo:accessRules": ["_:ar1", "_:ar2"], // inherited by version
             "ore:aggregates": [
                 {
-                    "nfo:fileName": "E:\\756\\A3609756.1",
+                    "nfo:fileName": "A3609756.1",
+                    "premis:originalName": "E:\\771\\A1314771.1",
                     "nfo:fileSize": 37463,
-                    "premis:Format": {
+                    "nfo:hasHash": {
+                        "nfo:hashAlgorithm": "MD5",
+                        "nfo:hashValue": "xxx"
+                    },
+                    "premis:format": {
                         "premis:formatRegistry": "pronom",
                         "premis:formatDesignation": "fmt/20"
                     },
