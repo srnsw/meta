@@ -59,7 +59,7 @@
   "repo:versions": [
     {
       "repo:versionNumber": 0,
-      "repo:accessRules": [
+      "repo:hasAccessRules": [
         "_:ar2"
       ],
       "ore:aggregates": [
