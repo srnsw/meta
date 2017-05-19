@@ -1,131 +1,232 @@
 {
-"repo:accessRules": [
+  "repo:accessRules": [
     {
-        "@id": "_:ar0",
-        "repo:executeDate": "2100-12-12",
-        "repo:global": true,
-        "repo:publish": true,
-        "repo:basis": {
-          "repo:accessDirection": "xx",
-          "repo:accessDescription": ""
-        },
-        "repo:metadataPatch": 2,
-        "repo:fullManifest": true,
-        "repo:textTarget": "0/dkjfe.txt",
-        "repo:displayTarget": "1/preview.png",
-        "repo:displayType": "image/png"
+      "@id": "_:ar0",
+      "repo:executeDate": "2017-01-01",
+      "repo:global": true,
+      "repo:publish": true,
+      "repo:basis": {
+        "repo:accessDirection": "xx",
+        "repo:accessDescription": ""
+      },
+      "repo:fullManifest": true,
+      "repo:inherit": false
     },
     {
-        "@id": "_:ar1",
-        "executeDate": "2000-12-12",
-        "global": false,
-        "publish": true,
-        "basis": {
-          "accessDirection": "xx",
-          "description": ""
-        },
-        "metadataPatch": 2,
-        "fullManifest": false,
-        "textTarget": "1/bla.txt",
-        "displayTarget": "1/preview.png",
-        "displayType": "image/png"
+      "@id": "_:ar1",
+      "repo:executeDate": "2100-12-12",
+      "repo:global": true,
+      "repo:publish": true,
+      "repo:basis": {
+        "repo:accessDirection": "xx",
+        "repo:accessDescription": ""
+      },
+      "repo:fullManifest": true,
+      "repo:textTarget": "1/text",
+      "repo:displayTarget": "1/preview.png",
+      "repo:displayType": "image/png"
     },
     {
-        "@id": "_:ar2",
-        "executeDate": "2000-12-12",
-        "global": false,
-        "publish": false,
-        "basis": {
-          "accessDirection": "xx",
-          "description": ""
-        },
-        "fullManifest": true,
-        "textTarget": "2/foo.txt",
-        "displayTarget": "1/preview.png",
-        "displayType": "image/png"
+      "@id": "_:ar2",
+      "repo:executeDate": "2017-12-12",
+      "repo:global": false,
+      "repo:publish": false,
+      "repo:basis": {
+        "repo:accessDirection": "xx",
+        "repo:accessDescription": ""
+      },
+      "repo:metadataPatch": 1,
+      "repo:fullManifest": true,
+      "repo:textTarget": "2/text",
+      "repo:displayTarget": "2/preview.png",
+      "repo:displayType": "image/png"
+    },
+    {
+      "@id": "_:ar3",
+      "repo:executeDate": "2017-12-12",
+      "repo:global": false,
+      "repo:publish": true,
+      "repo:basis": {
+        "repo:accessDirection": "xx",
+        "repo:description": ""
+      },
+      "repo:fullManifest": false,
+      "repo:textTarget": "3/text",
+      "repo:displayTarget": "3/preview.png",
+      "repo:displayType": "image/png"
     }
-],
-"versions": [
+  ],
+  "repo:versions": [
+    {
+      "repo:versionNumber": 0,
+      "repo:accessRules": [
+        "_:ar2"
+      ],
+      "ore:aggregates": [
         {
-            "version:srnsw": 0,
-            "repo:accessRules": ["_:ar1", "_:ar2"], // inherited by version
-            "ore:aggregates": [
-                {
-                    "nfo:fileName": "A3609756.1",
-                    "premis:originalName": "E:\\771\\A1314771.1",
-                    "nfo:fileSize": 37463,
-                    "nfo:hasHash": {
-                        "nfo:hashAlgorithm": "MD5",
-                        "nfo:hashValue": "xxx"
-                    },
-                    "premis:format": {
-                        "premis:formatRegistry": "pronom",
-                        "premis:formatDesignation": "fmt/20"
-                    },
-                    "dc:format": "application/pdf",
-                    "repo:accessRules": [1, 2] // file level
-                },
-                {
-                    "nfo:fileName": "E:\\771\\A1314771.1",
-                    "@id": "",
-                    "@type": "",
-                    "nfo:fileSize": 56899,
-                    "premis:Format": {
-                        "premis:formatRegistry": "pronom",
-                        "premis:formatDesignation": "fmt/20"
-                    },
-                    "dct:format": "application/pdf",
-                    "srnsw:accessRule": {
-                        "srnsw:accessDirection": "1310",
-                        "srnsw:effect": "OPA"
-                    }
-                },
-                {
-                    "nfo:fileName": "E:\\006\\A1305006.1",
-                    "@id": "",
-                    "@type": "",
-                    "nfo:fileSize": 41734,
-                    "premis:Format": {
-                        "premis:formatRegistry": "pronom",
-                        "premis:formatDesignation": "fmt/20"
-                    },
-                    "dct:format": "application/pdf",
-                    "srnsw:accessRule": {
-                        "srnsw:accessDirection": "1310",
-                        "srnsw:effect": "OPA"
-                    }
-                },
-                {
-                    "nfo:fileName": "E:\\054\\A805054.1",
-                    "@id": "",
-                    "@type": "",
-                    "nfo:fileSize": 42355,
-                    "premis:Format": {
-                        "premis:formatRegistry": "pronom",
-                        "premis:formatDesignation": "fmt/20"
-                    },
-                    "dct:format": "application/pdf",
-                    "srnsw:accessRule": {
-                        "srnsw:accessDirection": "1310",
-                        "srnsw:effect": "OPA"
-                    }
-                },
-                {
-                    "nfo:fileName": "E:\\955\\A1002955.1",
-                    "@id": "",
-                    "@type": "",
-                    "nfo:fileSize": 111541,
-                    "premis:Format": {
-                        "premis:formatRegistry": "pronom",
-                        "premis:formatDesignation": "fmt/20"
-                    },
-                    "dct:format": "application/pdf",
-                    "srnsw:accessRule": {
-                        "srnsw:accessDirection": "1310",
-                        "srnsw:effect": "OPA"
-                    }
-                }
-            ]
+          "nfo:fileName": "A3609756.1",
+          "premis:originalName": "E:\\771\\A1314771.1",
+          "nfo:fileSize": 37463,
+          "nfo:hasHash": {
+            "nfo:hashAlgorithm": "MD5",
+            "nfo:hashValue": "xxx"
+          },
+          "premis:format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dc:format": "application/pdf",
+          "repo:accessRules": [
+            "_:ar3"
+          ]
+        },
+        {
+          "nfo:fileName": "E:\\771\\A1314771.1",
+          "@id": "",
+          "@type": "",
+          "nfo:fileSize": 56899,
+          "premis:Format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dct:format": "application/pdf"
+        },
+        {
+          "nfo:fileName": "E:\\006\\A1305006.1",
+          "@id": "",
+          "@type": "",
+          "nfo:fileSize": 41734,
+          "premis:Format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dct:format": "application/pdf"
+        },
+        {
+          "nfo:fileName": "E:\\054\\A805054.1",
+          "@id": "",
+          "@type": "",
+          "nfo:fileSize": 42355,
+          "premis:Format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dct:format": "application/pdf"
+        },
+        {
+          "nfo:fileName": "E:\\955\\A1002955.1",
+          "@id": "",
+          "@type": "",
+          "nfo:fileSize": 111541,
+          "premis:Format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dct:format": "application/pdf"
         }
-    ]
+      ]
+    },
+    {
+      "repo:versionNumber": 1,
+      "ore:aggregates": [
+        {
+          "nfo:fileName": "text",
+          "nfo:fileSize": 1240,
+          "nfo:hasHash": {
+            "nfo:hashAlgorithm": "MD5",
+            "nfo:hashValue": "xxx"
+          },
+          "premis:format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "x-fmt/111"
+          },
+          "dct:format": "text/plain"
+        },
+        {
+          "nfo:fileName": "preview.png",
+          "nfo:fileSize": 3200,
+          "nfo:hasHash": {
+            "nfo:hashAlgorithm": "MD5",
+            "nfo:hashValue": "xxx"
+          },
+          "premis:format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/12"
+          },
+          "dct:format": "image/png"
+        }
+      ]
+    },
+    {
+      "repo:versionNumber": 2,
+      "repo:accessRules": [
+        "_:ar2"
+      ],
+      "ore:aggregates": [
+        {
+          "nfo:fileName": "preview.png",
+          "nfo:fileSize": 3200,
+          "nfo:hasHash": {
+            "nfo:hashAlgorithm": "MD5",
+            "nfo:hashValue": "xxx"
+          },
+          "premis:format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/12"
+          },
+          "dct:format": "image/png"
+        },
+        {
+          "nfo:fileName": "A3609756.1",
+          "premis:originalName": "E:\\771\\A1314771.1",
+          "nfo:fileSize": 37463,
+          "nfo:hasHash": {
+            "nfo:hashAlgorithm": "MD5",
+            "nfo:hashValue": "xxx"
+          },
+          "premis:format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dct:format": "application/pdf"
+        }
+      ]
+    },
+    {
+      "repo:versionNumber": 3,
+      "repo:accessRules": [
+        "_:ar3"
+      ],
+      "ore:aggregates": [
+        {
+          "nfo:fileName": "A3609756.1",
+          "premis:originalName": "E:\\771\\A1314771.1",
+          "nfo:fileSize": 37463,
+          "nfo:hasHash": {
+            "nfo:hashAlgorithm": "MD5",
+            "nfo:hashValue": "xxx"
+          },
+          "premis:format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dct:format": "application/pdf"
+        },
+        {
+          "nfo:fileName": "A3609756.1",
+          "premis:originalName": "E:\\771\\A1314771.1",
+          "nfo:fileSize": 37463,
+          "nfo:hasHash": {
+            "nfo:hashAlgorithm": "MD5",
+            "nfo:hashValue": "xxx"
+          },
+          "premis:format": {
+            "premis:formatRegistry": "pronom",
+            "premis:formatDesignation": "fmt/20"
+          },
+          "dct:format": "application/pdf"
+        }
+      ]
+    }
+  ]
 }
