@@ -1,0 +1,371 @@
+{
+	"@context": {
+		"ore": "http://www.openarchives.org/ore/0.9/jsonld",
+		"nfo": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo",
+		"repo": "http://records.nsw.gov.nsw/repo"
+	},
+	"repo:accessRules": [{
+		"@id": "_:ar0",
+		"repo:executeDate": {
+			"@type": "xsd:dateTime",
+			"@value": "2017-01-23T00:00:00.000Z"
+		},
+		"repo:scope": "local",
+		"repo:publish": true,
+		"repo:basis": {
+			"repo:accessDirection": "TBA",
+			"repo:accessDescription": "TBA"
+		},
+		"repo:fullManifest": true,
+		"repo:displayTarget": [{
+			"@id": "_:v0f0"
+		},
+		{
+			"@id": "_:v0f2"
+		},
+		{
+			"@id": "_:v0f3"
+		}],
+		"repo:previewTarget": [{
+			"@id": "_:v1f0"
+		}],
+		"repo:textTarget": [{
+			"@id": "_:v1f1"
+		}]
+	}],
+	"repo:versions": [{
+		"@id": "_:v0",
+		"nfo:Folder": "/versions/0",
+		"repo:accessRules": ["_:ar0"],
+		"ore:aggregates": [{
+			"@id": "_:v0f0",
+			"nfo:fileName": "index.html",
+			"nfo:fileSize": 4026,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/471"
+			},
+			"dc:format": "text/html"
+		},
+		{
+			"@id": "_:v0f1",
+			"nfo:fileName": "README.txt",
+			"nfo:fileSize": 1056,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/111"
+			},
+			"dc:format": "text/plain"
+		},
+		{
+			"@id": "_:v0f2",
+			"nfo:fileName": "tweets.csv",
+			"nfo:fileSize": 949720,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/18"
+			},
+			"dc:format": "tweets/csv"
+		},
+		{
+			"@id": "_:v0f3",
+			"nfo:fileName": "application.min.css",
+			"nfo:Folder": "/css",
+			"nfo:fileSize": 7113,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "text/css"
+		},
+		{
+			"@id": "_:v0f4",
+			"nfo:fileName": "payload_details.js",
+			"nfo:Folder": "/data/js",
+			"nfo:fileSize": 107,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f5",
+			"nfo:fileName": "tweet_index.js",
+			"nfo:Folder": "/data/js",
+			"nfo:fileSize": 13378,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f6",
+			"nfo:fileName": "user_details.js",
+			"nfo:Folder": "/data/js",
+			"nfo:fileSize": 235,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f7",
+			"nfo:fileName": "2011_04.js",
+			"nfo:Folder": "/data/js/tweets",
+			"nfo:fileSize": 33519,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f8",
+			"nfo:fileName": "2011_05.js",
+			"nfo:Folder": "/data/js/tweets",
+			"nfo:fileSize": 27625,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f9",
+			"nfo:fileName": "bg.png",
+			"nfo:Folder": "/img",
+			"nfo:fileSize": 4510,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/11"
+			},
+			"dc:format": "image/png"
+		},
+		{
+			"@id": "_:v0f10",
+			"nfo:fileName": "sprite.png",
+			"nfo:Folder": "/img",
+			"nfo:fileSize": 7444,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/11"
+			},
+			"dc:format": "image/png"
+		},
+		{
+			"@id": "_:v0f11",
+			"nfo:fileName": "application.js",
+			"nfo:Folder": "/js",
+			"nfo:fileSize": 25240,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f12",
+			"nfo:fileName": "en.js",
+			"nfo:Folder": "/js",
+			"nfo:fileSize": 127621,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f13",
+			"nfo:fileName": "bootstrap.min.css",
+			"nfo:Folder": "/lib/bootstrap",
+			"nfo:fileSize": 74118,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/224"
+			},
+			"dc:format": "text/css"
+		},
+		{
+			"@id": "_:v0f14",
+			"nfo:fileName": "bootstrap-dropdown.js",
+			"nfo:Folder": "/lib/bootstrap",
+			"nfo:fileSize": 3963,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f15",
+			"nfo:fileName": "bootstrap-modal.js",
+			"nfo:Folder": "/lib/bootstrap",
+			"nfo:fileSize": 6424,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f16",
+			"nfo:fileName": "bootstrap-tooltip.js",
+			"nfo:Folder": "/lib/bootstrap",
+			"nfo:fileSize": 7476,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f17",
+			"nfo:fileName": "bootstrap-transition.js",
+			"nfo:Folder": "/lib/bootstrap",
+			"nfo:fileSize": 1756,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f18",
+			"nfo:fileName": "glyphicons-halflings.png",
+			"nfo:Folder": "/lib/bootstrap",
+			"nfo:fileSize": 12799,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/11"
+			},
+			"dc:format": "image/png"
+		},
+		{
+			"@id": "_:v0f19",
+			"nfo:fileName": "glyphicons-halflings-white.png",
+			"nfo:Folder": "/lib/bootstrap",
+			"nfo:fileSize": 8777,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/11"
+			},
+			"dc:format": "image/png"
+		},
+		{
+			"@id": "_:v0f20",
+			"nfo:fileName": "hogan-2.0.0.min.js",
+			"nfo:Folder": "/lib/hogan",
+			"nfo:fileSize": 5885,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f21",
+			"nfo:fileName": "jquery-1.8.3.min.js",
+			"nfo:Folder": "/lib/jquery",
+			"nfo:fileSize": 9363,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f22",
+			"nfo:fileName": "sprite.png",
+			"nfo:Folder": "/lib/twt",
+			"nfo:fileSize": 1143,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/11"
+			},
+			"dc:format": "image/png"
+		},
+		{
+			"@id": "_:v0f23",
+			"nfo:fileName": "sprite.rtl.png",
+			"nfo:Folder": "/lib/twt",
+			"nfo:fileSize": 1134,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/11"
+			},
+			"dc:format": "image/png"
+		},
+		{
+			"@id": "_:v0f24",
+			"nfo:fileName": "twt.all.min.js",
+			"nfo:Folder": "/lib/twt",
+			"nfo:fileSize": 90718,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f25",
+			"nfo:fileName": "tweet.min.css",
+			"nfo:Folder": "/lib/twt",
+			"nfo:fileSize": 22166,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/224"
+			},
+			"dc:format": "text/css"
+		},
+		{
+			"@id": "_:v0f26",
+			"nfo:fileName": "underscore-min.js",
+			"nfo:Folder": "/lib/underscore",
+			"nfo:fileSize": 13582,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		},
+		{
+			"@id": "_:v0f27",
+			"nfo:fileName": "2017_01.js",
+			"nfo:Folder": "/data/js/tweets",
+			"nfo:fileSize": 6495,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/423"
+			},
+			"dc:format": "application/javascript"
+		}]
+	},
+	{
+		"@id": "_:v1",
+		"nfo:Folder": "/versions/1",
+		"repo:accessRules": ["_:ar0"],
+		"ore:aggregates": [{
+			"@id": "_:v1f0",
+			"nfo:fileName": "C2fqqLyUkAAsB8p.jpg",
+			"nfo:fileSize": 61079,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "fmt/43"
+			},
+			"dc:format": "image/jpeg"
+		},
+		{
+			"@id": "_:v1f1",
+			"nfo:fileName": "displayTextTarget for Metadata Sample Output - 2011_04_Twitter.txt",
+			"nfo:fileSize": 2635,
+			"premis:Format": {
+				"premis:formatRegistry": "pronom",
+				"premis:formatDesignation": "x-fmt/111"
+			},
+			"dc:format": "text/plain"
+		}]
+	}]
+}
