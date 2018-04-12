@@ -46,6 +46,8 @@ func New(loaders ...Loader) (*Meta, error) {
 
 // Output generates metadata.json and manifest.json files for all of a Meta's metadata.
 // Arbitrary actions based on that data can also be called by this function.
+// For testing provide a sample size e.g. 10. When running in production, give a negative int for sample.
+// Target is the target output directory.
 func (m *Meta) Output(sample int, target string, actions ...Action) error {
 	for i, v := range m.Index {
 		if sample == 0 {
@@ -60,6 +62,11 @@ func (m *Meta) Output(sample int, target string, actions ...Action) error {
 			return err
 		}
 		// create metadata.json
+		ctx, err := populate(metadataContext, meta)
+		if err != nil {
+			return err
+		}
+		meta.Context = ctx
 		j, err := json.MarshalIndent(meta, "", "  ")
 		if err != nil {
 			return err
@@ -68,6 +75,11 @@ func (m *Meta) Output(sample int, target string, actions ...Action) error {
 			return err
 		}
 		// create manifest.json
+		ctx, err = populate(manifestContext, man)
+		if err != nil {
+			return err
+		}
+		man.Context = ctx
 		j, err = json.MarshalIndent(man, "", "  ")
 		if err != nil {
 			return err

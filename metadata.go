@@ -2,6 +2,7 @@ package meta
 
 // represents a metadata.json file
 type Metadata struct {
+	Context       Context        `json:"@context"`
 	Title         string         `json:"dct:title"`
 	Created       string         `json:"created,omitempty"`
 	Creators      []Agent        `json:"creators,omitempty"`
@@ -34,4 +35,12 @@ type Organisation struct {
 type OrganisationFields struct {
 	Name     string `json:"name,omitempty"`
 	AgencyID int    `json:"agencyID,omitempty"`
+}
+
+var metadataContext = Context{
+	"accessRules": "http://www.records.nsw.gov.au/repo/accessRules",
+	"executeDate": ObjField{
+		ID:  "http://www.records.nsw.gov.au/repo/executeDate",
+		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
+	},
 }
