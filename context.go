@@ -13,8 +13,9 @@ type Context map[string]Field
 type Field interface{}
 
 type ObjField struct {
-	ID  string `json:"@id"`
-	Typ string `json:"@type"`
+	ID        string `json:"@id"`
+	Typ       string `json:"@type,omitempty"`
+	Container string `json:"@container,omitempty"`
 }
 
 func populate(templ Context, v interface{}) (Context, error) {

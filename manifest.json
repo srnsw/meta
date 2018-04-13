@@ -13,7 +13,8 @@
     "fullManifest": "http://www.records.nsw.gov.au/repo/fullManifest",
     "displayTarget": {
       "@id": "http://www.records.nsw.gov.au/repo/displayTarget",
-      "@type": "@id"
+      "@type": "@id", 
+      "@container": "@list"
     },
     "previewTarget": {
       "@id": "http://www.records.nsw.gov.au/repo/previewTarget",
