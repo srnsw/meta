@@ -67,6 +67,7 @@ func (m *Meta) Output(sample int, target string, actions ...Action) error {
 			return err
 		}
 		meta.Context = ctx
+		meta.Typ = metadataTyp
 		j, err := json.MarshalIndent(meta, "", "  ")
 		if err != nil {
 			return err

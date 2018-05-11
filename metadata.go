@@ -2,7 +2,7 @@ package meta
 
 // represents a metadata.json file
 type Metadata struct {
-	Context       Context        `json:"@context"`
+	Typ           []string       `json:"@type"`
 	Title         string         `json:"dct:title"`
 	Created       string         `json:"created,omitempty"`
 	Creators      []Agent        `json:"creators,omitempty"`
@@ -10,6 +10,7 @@ type Metadata struct {
 	DisposalRules []DisposalRule `json:"disposalRules"`
 	Audio         *MediaFields   `json:"audio,omitempty"`
 	Video         *MediaFields   `json:"video,omitempty"`
+	Context       Context        `json:"@context"`
 }
 
 type MediaFields struct {
@@ -38,9 +39,13 @@ type OrganisationFields struct {
 }
 
 var metadataContext = Context{
-	"accessRules": "http://www.records.nsw.gov.au/repo/accessRules",
+	"title": "http://purl.org/dc/terms/title",
 	"executeDate": ObjField{
 		ID:  "http://www.records.nsw.gov.au/repo/executeDate",
 		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
 	},
 }
+
+var metadataTyp = []string{
+	"http://www.loc.gov/premis/rdf/v3/Object",
+	"http://www.records.nsw.gov.au/terms/DigitalArchive"}

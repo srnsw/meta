@@ -1,0 +1,130 @@
+{
+  "@type": "http://www.records.nsw.gov.au/terms/Manifest",
+  "accessRules": [
+    {
+      "@id": "_:ar0",
+      "executeDate": "2016-05-23",
+      "scope": "global",
+      "publish": true,
+      "basis": {
+        "accessDirection": "http://www.records.nsw.gov.au/accessDirection/1296",
+        "accessDescription": "Early"
+      },
+      "fullManifest": false,
+      "displayTarget": [
+        "_:v0f0",
+        "_:v0f2",
+        "_:v0f3"
+      ],
+      "previewTarget": [
+        "_:v1f0"
+      ],
+      "textTarget": [
+        "_:v1f1"
+      ]
+    }
+  ],
+  "versions": [
+    {
+      "@id": "_:v0",
+      "base": "versions/0",
+      "hasAccessRules": [
+        "_:ar0"
+      ],
+      "files": [
+        {
+          "@id": "_:v0f0",
+          "name": "index.html",
+          "originalName": "Teddies photos\\Materials_teddies_44250.jpg",
+          "size": 4026,
+          "fileCreated": "2015-04-20T17:41:48+10:00",
+          "modified": "2015-04-20T17:41:48+10:00",
+          "mime": "text/html",
+          "puid": "http://www.nationalarchives.gov.uk/pronom/fmt/24",
+          "hash": {
+            "hashAlgorithm": "md5",
+            "hashValue": "hfuehwoiuhfoeihjwpoih0197626"
+          }
+        }
+      ]
+    }
+  ],
+  "@context": {
+    "accessDescription": "http://www.records.nsw.gov.au/terms/accessDescription",
+    "accessDirection": {
+      "@id": "http://www.records.nsw.gov.au/terms/accessDirection",
+      "@type": "@id"
+    },
+    "accessRules": {
+      "@id": "http://www.records.nsw.gov.au/terms/accessRules",
+      "@type": "http://www.records.nsw.gov.au/terms/AccessRule"
+    },
+    "base": "http://www.records.nsw.gov.au/terms/base",
+    "basis": {
+      "@id": "http://www.records.nsw.gov.au/terms/basis",
+      "@type": "http://www.records.nsw.gov.au/terms/Basis"
+    },
+    "displayTarget": {
+      "@id": "http://www.records.nsw.gov.au/terms/displayTarget",
+      "@type": "@id"
+    },
+    "executeDate": {
+      "@id": "http://www.records.nsw.gov.au/terms/executeDate",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "fileCreated": {
+      "@id": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileCreated",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "files": {
+      "@id": "http://www.openarchives.org/ore/0.9/jsonld#aggregates",
+      "@type": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject"
+    },
+    "fullManifest": {
+      "@id": "http://www.records.nsw.gov.au/terms/fullManifest",
+      "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "hasAccessRules": {
+      "@id": "http://www.records.nsw.gov.au/terms/hasAccessRules",
+      "@type": "@id"
+    },
+    "hash": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hasHash",
+    "hashAlgorithm": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashAlgorithm",
+    "hashValue": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashValue",
+    "mime": {
+      "@id": "http://purl.org/dc/terms/format",
+      "@type": "http://purl.org/dc/terms/FileFormat"
+    },
+    "modified": {
+      "@id": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileLastModified",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "name": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileName",
+    "originalName": "http://id.loc.gov/vocabulary/preservation/hasOriginalName",
+    "previewTarget": {
+      "@id": "http://www.records.nsw.gov.au/terms/previewTarget",
+      "@type": "@id"
+    },
+    "publish": {
+      "@id": "http://www.records.nsw.gov.au/terms/publish",
+      "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "puid": {
+      "@id": "http://purl.org/dc/terms/format",
+      "@type": "@id"
+    },
+    "scope": "http://www.records.nsw.gov.au/terms/scope",
+    "size": {
+      "@id": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileSize",
+      "@type": "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "textTarget": {
+      "@id": "http://www.records.nsw.gov.au/terms/textTarget",
+      "@type": "@id"
+    },
+    "versions": {
+      "@id": "http://www.records.nsw.gov.au/terms/versions",
+      "@type": "http://www.records.nsw.gov.au/terms/Version"
+    }
+  }
+}

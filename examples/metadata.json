@@ -1,0 +1,87 @@
+{
+  "@type": [
+    "http://www.records.nsw.gov.au/terms/DigitalArchive",
+    "http://schema.org/Movie"
+  ],
+  "title": "Business Name Registration - Duntryleague Country Club",
+  "source": "https://twitter.com/",
+  "series": "http://www.records.nsw.gov.au/series/21404",
+  "created": "1902-01-01",
+  "disposalRule": {
+    "authority": "DA48",
+    "class": "1.1.1.2"
+  },
+  "creators": [
+    {
+      "@type": "http://www.records.nsw.gov.au/terms/Agency",
+      "name": "Office of Fair Trading"
+    },
+    {
+      "@type": "http://records.nsw.gov.au/terms/Person",
+      "@id": "http://records.nsw.gov.au/persons/288",
+      "name": "Michael Bruce Baird"
+    }
+  ],
+  "duration": "13:47:30",
+  "language": "en",
+  "subtitles": "zh",
+  "director": "",
+  "actor": "",
+  "productionCompany": "",
+  "about": {
+    "@type": "http://schema.org/Organization",
+    "legalName": "Duntryleague Country Club",
+    "commencedTrading": "1000-01-01",
+    "ceasedTrading": "1999-03-29",
+    "renewalDueDate": "1998-11-30",
+    "registrationNumber": "A0369711",
+    "abn": "Unknown",
+    "proprietor": [
+      {
+        "@type": "http://schema.org/Organization",
+        "name": "The Orange Golf Club Ltd"
+      }
+    ]
+  },
+  "@context": {
+    "about": "http://schema.org/about",
+    "abn": "https://www.wikidata.org/wiki/Q4823913",
+    "actor": "http://schema.org/actor",
+    "authority": "http://www.records.nsw.gov.au/terms/disposalAuthority",
+    "ceasedTrading": "http://schema.org/dissolutionDate",
+    "commencedTrading": "http://schema.org/foundingDate",
+    "class": "http://www.records.nsw.gov.au/terms/disposalClass",
+    "consignment": {
+      "@id": "http://records.nsw.gov.au/terms/consignment",
+      "@type": "@id"
+    },
+    "created": {
+      "@id": "http://purl.org/dc/terms/created",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "creators": "http://purl.org/dc/terms/creator",
+    "director": "http://schema.org/director",
+    "disposalRule": {
+      "@id": "http://www.records.nsw.gov.au/terms/disposalRule",
+      "@type": "http://www.records.nsw.gov.au/terms/DisposalRule"
+    },
+    "duration": "http://schema.org/duration",
+    "language": "http://schema.org/inLanguage",
+    "legalName": "http://schema.org/legalName",
+    "name": "http://schema.org/name",
+    "productionCompany": "http://schema.org/productionCompany",
+    "proprietor": "http://www.records.nsw.gov.au/terms/proprietor",
+    "registrationNumber": "http://www.records.nsw.gov.au/terms/registrationNumber",
+    "renewalDueDate": {
+      "@id": "http://www.records.nsw.gov.au/terms/renewalDueDate",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "series": {
+      "@id": "http://records.nsw.gov.au/terms/series",
+      "@type": "@id"
+    },
+    "source": "http://purl.org/dc/terms/source",
+    "subtitles": "http://schema.org/subtitleLanguage",
+    "title": "http://purl.org/dc/terms/title"
+  }
+}
