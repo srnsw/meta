@@ -4,30 +4,33 @@
     "http://schema.org/Movie"
   ],
   "title": "Business Name Registration - Duntryleague Country Club",
-  "source": "https://twitter.com/",
-  "series": "http://www.records.nsw.gov.au/series/21404",
   "created": "1902-01-01",
-  "disposalRule": {
-    "authority": "DA48",
-    "class": "1.1.1.2"
-  },
   "creators": [
     {
       "@type": "http://www.records.nsw.gov.au/terms/Agency",
       "name": "Office of Fair Trading"
     },
     {
-      "@type": "http://records.nsw.gov.au/terms/Person",
-      "@id": "http://records.nsw.gov.au/persons/288",
+      "@id": "http://www.records.nsw.gov.au/persons/288",
+      "@type": "http://www.records.nsw.gov.au/terms/Person",
       "name": "Michael Bruce Baird"
+    }
+  ],
+  "source": "https://twitter.com/",
+  "series": "http://www.records.nsw.gov.au/series/21404",
+  "consignment": "http://www.records.nsw.gov.au/consignment/189087",
+  "disposalRules": [
+    {
+      "authority": "DA48",
+      "class": "1.1.1.2"
     }
   ],
   "duration": "13:47:30",
   "language": "en",
   "subtitles": "zh",
-  "director": "",
-  "actor": "",
-  "productionCompany": "",
+  "director": "Mel Gibson",
+  "actor": "Mel Gibson",
+  "productionCompany": "Icon Films",
   "about": {
     "@type": "http://schema.org/Organization",
     "legalName": "Duntryleague Country Club",
@@ -36,7 +39,7 @@
     "renewalDueDate": "1998-11-30",
     "registrationNumber": "A0369711",
     "abn": "Unknown",
-    "proprietor": [
+    "proprietors": [
       {
         "@type": "http://schema.org/Organization",
         "name": "The Orange Golf Club Ltd"
@@ -44,13 +47,13 @@
     ]
   },
   "@context": {
-    "about": "http://schema.org/about",
     "abn": "https://www.wikidata.org/wiki/Q4823913",
+    "about": "http://schema.org/about",
     "actor": "http://schema.org/actor",
     "authority": "http://www.records.nsw.gov.au/terms/disposalAuthority",
     "ceasedTrading": "http://schema.org/dissolutionDate",
-    "commencedTrading": "http://schema.org/foundingDate",
     "class": "http://www.records.nsw.gov.au/terms/disposalClass",
+    "commencedTrading": "http://schema.org/foundingDate",
     "consignment": {
       "@id": "http://records.nsw.gov.au/terms/consignment",
       "@type": "@id"
@@ -61,8 +64,8 @@
     },
     "creators": "http://purl.org/dc/terms/creator",
     "director": "http://schema.org/director",
-    "disposalRule": {
-      "@id": "http://www.records.nsw.gov.au/terms/disposalRule",
+    "disposalRules": {
+      "@id": "http://www.records.nsw.gov.au/terms/disposalRules",
       "@type": "http://www.records.nsw.gov.au/terms/DisposalRule"
     },
     "duration": "http://schema.org/duration",
@@ -70,7 +73,7 @@
     "legalName": "http://schema.org/legalName",
     "name": "http://schema.org/name",
     "productionCompany": "http://schema.org/productionCompany",
-    "proprietor": "http://www.records.nsw.gov.au/terms/proprietor",
+    "proprietors": "http://www.records.nsw.gov.au/terms/proprietors",
     "registrationNumber": "http://www.records.nsw.gov.au/terms/registrationNumber",
     "renewalDueDate": {
       "@id": "http://www.records.nsw.gov.au/terms/renewalDueDate",

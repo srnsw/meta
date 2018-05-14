@@ -52,7 +52,7 @@ func newTime(s string) *time.Time {
 
 func TestManifest(t *testing.T) {
 	m := NewManifest()
-	arid, err := m.AddAR("2016-05-23", "global", true, "http://www.records.nsw.gov.au/accessDirection/1296", "Early", []FileTarget{{0, 0}, {0, 2}, {0, 3}}, []FileTarget{{1, 0}}, []FileTarget{{1, 1}})
+	arid, err := m.AddAR("2016-05-23", "global", true, 1296, "Early", []FileTarget{{0, 0}, {0, 2}, {0, 3}}, []FileTarget{{1, 0}}, []FileTarget{{1, 1}})
 	if err != nil {
 		t.Fatal(err)
 	}

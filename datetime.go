@@ -16,6 +16,16 @@ func (d W3CDate) MarshalJSON() ([]byte, error) {
 	return b, nil
 }
 
+func NewDate(d string) *W3CDate {
+	var date *W3CDate
+	if d != "" {
+		if pd, err := ParseDate(d); err == nil {
+			date = &pd
+		}
+	}
+	return date
+}
+
 // ParseDate makes a Date from a W3C style date string
 func ParseDate(d string) (W3CDate, error) {
 	t, err := time.Parse(w3cdtf, d)

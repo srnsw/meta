@@ -130,7 +130,7 @@ func NewManifest() *Manifest {
 func (m *Manifest) AddAR(
 	executeDate, scope string,
 	publish bool,
-	accessDirection,
+	accessDirection int,
 	accessDescription string,
 	display, preview, text []FileTarget,
 ) (arid string, err error) {
@@ -144,7 +144,7 @@ func (m *Manifest) AddAR(
 func AppendAR(rules []AccessRule,
 	executeDate, scope string,
 	publish bool,
-	accessDirection,
+	accessDirection int,
 	accessDescription string,
 	display, preview, text []FileTarget,
 ) ([]AccessRule, string, error) {
@@ -160,9 +160,9 @@ func AppendAR(rules []AccessRule,
 		return nil, "", errors.New("scope must be either root, global or local")
 	}
 	var basis *Basis
-	if accessDirection != "" {
+	if accessDirection > 0 {
 		basis = &Basis{
-			AccessDirection:   accessDirection,
+			AccessDirection:   ToID(accessDirection, "http://www.records.nsw.gov.au/accessDirection/"),
 			AccessDescription: accessDescription,
 		}
 	}

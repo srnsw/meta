@@ -8,6 +8,13 @@ import (
 	"strconv"
 )
 
+func ToID(i int, pat string) string {
+	if i <= 0 {
+		return ""
+	}
+	return pat + strconv.Itoa(i)
+}
+
 // Cap defines the capacity of the index slice. Edit for large jobs to an approximate number of objects
 var Cap int = 1000
 
@@ -67,7 +74,6 @@ func (m *Meta) Output(sample int, target string, actions ...Action) error {
 			return err
 		}
 		meta.Context = ctx
-		meta.Typ = metadataTyp
 		j, err := json.MarshalIndent(meta, "", "  ")
 		if err != nil {
 			return err
