@@ -1,27 +1,13 @@
 package meta
 
 import (
+	"encoding/csv"
 	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
 )
-
-func ToID(i int, pat string) string {
-	if i <= 0 {
-		return ""
-	}
-	return pat + strconv.Itoa(i)
-}
-
-// Cap defines the capacity of the index slice. Edit for large jobs to an approximate number of objects
-var Cap int = 1000
-
-// Loader is anything that can load data into a Meta
-type Loader interface {
-	Load(m *Meta) error
-}
 
 // Meta is a set of metadata (metadata.json and manifest.json)
 // The Index field provides ordering.
@@ -31,6 +17,14 @@ type Meta struct {
 	Metadata map[string]*Metadata
 	Manifest map[string]*Manifest
 	Store    map[string]interface{}
+}
+
+// Cap defines the capacity of the index slice. Edit for large jobs to an approximate number of objects
+var Cap int = 1000
+
+// Loader is anything that can load data into a Meta
+type Loader interface {
+	Load(m *Meta) error
 }
 
 // Action is a function (such as file copy) that is called when generating output
@@ -53,10 +47,20 @@ func New(loaders ...Loader) (*Meta, error) {
 
 // Output generates metadata.json and manifest.json files for all of a Meta's metadata.
 // Arbitrary actions based on that data can also be called by this function.
-// For testing provide a sample size e.g. 10. When running in production, give a negative int for sample.
 // Target is the target output directory.
-func (m *Meta) Output(sample int, target string, actions ...Action) error {
+func (m *Meta) Output(target string, actions ...Action) error {
+	return m.Sample(0, -1, target, actions...)
+}
+
+// Sample generates metadata.json and manifest.json files for a sample of a Meta's metadata.
+// Arbitrary actions based on that data can also be called by this function.
+// For testing provide a sample size e.g. 10 and an index where you'd like the sample to start.
+// Target is the target output directory.
+func (m *Meta) Sample(index, sample int, target string, actions ...Action) error {
 	for i, v := range m.Index {
+		if i < index {
+			continue
+		}
 		if sample == 0 {
 			return nil
 		}
@@ -102,4 +106,27 @@ func (m *Meta) Output(sample int, target string, actions ...Action) error {
 		}
 	}
 	return nil
+}
+
+// Helpers
+
+// ToID is a helper function that turns an integer identififier into a string @id
+// It is useful for places where we use integer IDs e.g. series numbers but want an IRI for the @id
+func ToID(i int, pat string) string {
+	if i <= 0 {
+		return ""
+	}
+	return pat + strconv.Itoa(i)
+}
+
+// ReadAll is a helper function that opens a file at path and reads as a CSV.
+// Returns a slice of string slices and an error.
+func ReadAll(path string) ([][]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	reader := csv.NewReader(file)
+	return reader.ReadAll()
 }

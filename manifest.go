@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// represents a manifest.json file
+// Manifest represents a manifest.json file
 type Manifest struct {
 	Type        string       `json:"@type"`
 	AccessRules []AccessRule `json:"accessRules,omitempty"`
@@ -14,6 +14,7 @@ type Manifest struct {
 	Context     Context      `json:"@context"`
 }
 
+// AccessRule represents accessRules
 type AccessRule struct {
 	ID           string   `json:"@id"`
 	ExecuteDate  W3CDate  `json:"executeDate"`
@@ -27,11 +28,13 @@ type AccessRule struct {
 	Text         []string `json:"textTarget,omitempty"`
 }
 
+// Basis is a json basis
 type Basis struct {
 	AccessDirection   string `json:"accessDirection"`
 	AccessDescription string `json:"accessDescription,omitempty"`
 }
 
+// Version represents versions
 type Version struct {
 	ID             string   `json:"@id"`
 	Base           string   `json:"base,omitempty"`
@@ -39,6 +42,7 @@ type Version struct {
 	Files          []File   `json:"files"`
 }
 
+// File represents files
 type File struct {
 	ID             string     `json:"@id"`
 	Name           string     `json:"name"`
@@ -52,81 +56,23 @@ type File struct {
 	HasAccessRules []string   `json:"hasAccessRules,omitempty"`
 }
 
+// Hash is a json hash
 type Hash struct {
 	Algorithm string `json:"hashAlgorithm,omitempty"`
 	Value     string `json:"hashValue,omitempty"`
 }
 
-// Ref supports the construction of internal reference strings (blank node IDs) e.g. _:ar1
-type Ref struct {
-	Prefix string
-	N      int
-}
-
-// ReferenceN constructs an internal reference string from the supplied Ref(s)
-func ReferenceN(refs ...Ref) string {
-	base := "_:"
-	for _, ref := range refs {
-		base += ref.Prefix + strconv.Itoa(ref.N)
-	}
-	return base
-}
-
-// FileTarget is an internal reference for a file target
-type FileTarget [2]int
-
-func (ft FileTarget) String() string {
-	return ReferenceN(
-		Ref{"v", ft[0]},
-		Ref{"f", ft[1]},
-	)
-}
-
-func referenceFiles(ts []FileTarget) []string {
-	ret := make([]string, len(ts))
-	for i, v := range ts {
-		ret[i] = v.String()
-	}
-	return ret
-}
-
-// copy by reference is fine for most fields of an AccessRule,
-// except we don't want display/preview/text to be copied by reference
-func copyAR(ar AccessRule) AccessRule {
-	dis := make([]string, len(ar.Display))
-	copy(dis, ar.Display)
-	prev := make([]string, len(ar.Preview))
-	copy(dis, ar.Preview)
-	txt := make([]string, len(ar.Text))
-	copy(dis, ar.Text)
-	return AccessRule{
-		ID:           ar.ID,
-		ExecuteDate:  ar.ExecuteDate,
-		Scope:        ar.Scope,
-		Publish:      ar.Publish,
-		Basis:        ar.Basis,
-		Patch:        ar.Patch,
-		FullManifest: ar.FullManifest,
-		Display:      dis,
-		Preview:      prev,
-		Text:         txt,
-	}
-}
-
-func CopyARs(ar []AccessRule) []AccessRule {
-	ret := make([]AccessRule, len(ar))
-	for i, v := range ar {
-		ret[i] = copyAR(v)
-	}
-	return ret
-}
-
+// NewManifest returns a reference to a manifest. It also sets the @type field.
 func NewManifest() *Manifest {
 	return &Manifest{
 		Type: "http://www.records.nsw.gov.au/terms/Manifest",
 	}
 }
 
+// AddAR adds a new access rule to a Manifest
+// Provide access rule fields in the supplied arguments. Because of their rarity, Patch and FullManifest fields aren't supplied as
+// arguments but should be manipulated directly.
+// Returns the new access rule's @id and an error.
 func (m *Manifest) AddAR(
 	executeDate, scope string,
 	publish bool,
@@ -138,9 +84,10 @@ func (m *Manifest) AddAR(
 	return arid, err
 }
 
-// AppendAccessRule is a helper function to add a new access rule to a set of rules (or create a new set of rules by appending to nil)
+// AppendAR adds a new access rule to a set of rules (or create a new set of rules by appending to nil)
 // Provide access rule fields in the supplied arguments. Because of their rarity, Patch and FullManifest fields aren't supplied as
-// arguments but should be manipulated directly. Returns the list of access rules, the new access rule's ID and an error.
+// arguments but should be manipulated directly.
+// Returns the list of access rules, the new access rule's @id, and an error.
 func AppendAR(rules []AccessRule,
 	executeDate, scope string,
 	publish bool,
@@ -179,7 +126,9 @@ func AppendAR(rules []AccessRule,
 	}), arid, nil
 }
 
-// add version applies IDs to both the version and the files
+// AddVersion adds a new version to a Manifest.
+// It takes the base (e.g. "versions/0"), a slice of access rules, and a slice of files.
+// It returns the version @id.
 func (m *Manifest) AddVersion(base string, rules []string, files []File) string {
 	vid := ReferenceN(Ref{"v", len(m.Versions)})
 	for i, _ := range files {
@@ -191,84 +140,149 @@ func (m *Manifest) AddVersion(base string, rules []string, files []File) string 
 		HasAccessRules: rules,
 		Files:          files,
 	})
-
 	return vid
+}
+
+// CopyARs copies a slice of AccessRules. This allows you to create a template access rule and copy it e.g. to change file references.
+func CopyARs(ar []AccessRule) []AccessRule {
+	ret := make([]AccessRule, len(ar))
+	for i, v := range ar {
+		ret[i] = copyAR(v)
+	}
+	return ret
+}
+
+// copy by reference is fine for most fields of an AccessRule,
+// except we don't want display/preview/text to be copied by reference
+func copyAR(ar AccessRule) AccessRule {
+	dis := make([]string, len(ar.Display))
+	copy(dis, ar.Display)
+	prev := make([]string, len(ar.Preview))
+	copy(dis, ar.Preview)
+	txt := make([]string, len(ar.Text))
+	copy(dis, ar.Text)
+	return AccessRule{
+		ID:           ar.ID,
+		ExecuteDate:  ar.ExecuteDate,
+		Scope:        ar.Scope,
+		Publish:      ar.Publish,
+		Basis:        ar.Basis,
+		Patch:        ar.Patch,
+		FullManifest: ar.FullManifest,
+		Display:      dis,
+		Preview:      prev,
+		Text:         txt,
+	}
+}
+
+// Ref supports the construction of internal reference strings (blank node IDs) e.g. _:ar1
+type Ref struct {
+	Prefix string
+	N      int
+}
+
+// ReferenceN constructs an internal reference string from the supplied Ref(s)
+func ReferenceN(refs ...Ref) string {
+	base := "_:"
+	for _, ref := range refs {
+		base += ref.Prefix + strconv.Itoa(ref.N)
+	}
+	return base
+}
+
+// FileTarget is an internal reference for a file target
+type FileTarget [2]int
+
+// String is a string representation of a FileTarget
+func (ft FileTarget) String() string {
+	return ReferenceN(
+		Ref{"v", ft[0]},
+		Ref{"f", ft[1]},
+	)
+}
+
+func referenceFiles(ts []FileTarget) []string {
+	ret := make([]string, len(ts))
+	for i, v := range ts {
+		ret[i] = v.String()
+	}
+	return ret
 }
 
 var manifestContext = Context{
 	"accessDescription": "http://www.records.nsw.gov.au/terms/accessDescription",
-	"accessDirection": ObjField{
+	"accessDirection": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/accessDirection",
 		Typ: "@id",
 	},
-	"accessRules": ObjField{
+	"accessRules": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/accessRules",
 		Typ: "http://www.records.nsw.gov.au/terms/AccessRule",
 	},
 	"base": "http://www.records.nsw.gov.au/terms/base",
-	"basis": ObjField{
+	"basis": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/basis",
 		Typ: "http://www.records.nsw.gov.au/terms/Basis",
 	},
-	"displayTarget": ObjField{
+	"displayTarget": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/displayTarget",
 		Typ: "@id",
 	},
-	"executeDate": ObjField{
+	"executeDate": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/executeDate",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
-	"fileCreated": ObjField{
+	"fileCreated": Obj{
 		ID:  "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileCreated",
 		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
 	},
-	"files": ObjField{
+	"files": Obj{
 		ID:  "http://www.openarchives.org/ore/0.9/jsonld#aggregates",
 		Typ: "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject",
 	},
-	"fullManifest": ObjField{
+	"fullManifest": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/fullManifest",
 		Typ: "http://www.w3.org/2001/XMLSchema#boolean",
 	},
-	"hasAccessRules": ObjField{
+	"hasAccessRules": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/hasAccessRules",
 		Typ: "@id",
 	},
 	"hash":          "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hasHash",
 	"hashAlgorithm": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashAlgorithm",
 	"hashValue":     "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashValue",
-	"mime": ObjField{
+	"mime": Obj{
 		ID:  "http://purl.org/dc/terms/format",
 		Typ: "http://purl.org/dc/terms/FileFormat",
 	},
-	"modified": ObjField{
+	"modified": Obj{
 		ID:  "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileLastModified",
 		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
 	},
 	"name":         "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileName",
 	"originalName": "http://id.loc.gov/vocabulary/preservation/hasOriginalName",
-	"previewTarget": ObjField{
+	"previewTarget": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/previewTarget",
 		Typ: "@id",
 	},
-	"publish": ObjField{
+	"publish": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/publish",
 		Typ: "http://www.w3.org/2001/XMLSchema#boolean",
 	},
-	"puid": ObjField{
+	"puid": Obj{
 		ID:  "http://purl.org/dc/terms/format",
 		Typ: "@id",
 	},
 	"scope": "http://www.records.nsw.gov.au/terms/scope",
-	"size": ObjField{
+	"size": Obj{
 		ID:  "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileSize",
 		Typ: "http://www.w3.org/2001/XMLSchema#integer",
 	},
-	"textTarget": ObjField{
+	"textTarget": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/textTarget",
 		Typ: "@id",
 	},
-	"versions": ObjField{
+	"versions": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/versions",
 		Typ: "http://www.records.nsw.gov.au/terms/Version",
 	},

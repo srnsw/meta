@@ -1,6 +1,6 @@
 package meta
 
-// represents a metadata.json file
+// Metadata represents a metadata.json file
 type Metadata struct {
 	Typ               []string       `json:"@type"`
 	Title             string         `json:"title"`
@@ -20,38 +20,19 @@ type Metadata struct {
 	Context           Context        `json:"@context"`
 }
 
+// DisposalRule represents disposalRules
 type DisposalRule struct {
 	Authority string `json:"authority"`
 	Class     string `json:"class"`
 }
 
+// Agent can be a string e.g. "Richard Lehane" or an object with @id/@type
 type Agent interface{}
 
-func MakeAgent(name, id, typ string) Agent {
-	if id == "" && typ == "" {
-		return name
-	}
-	return ObjField{
-		ID:   id,
-		Typ:  typ,
-		Name: name,
-	}
-}
-
-func MakePerson(name string, id int) Agent {
-	return MakeAgent(name, ToID(id, "http://www.records.nsw.gov.au/persons/"), "http://www.records.nsw.gov.au/terms/Person")
-}
-
-func MakeAgency(name string, id int) Agent {
-	return MakeAgent(name, ToID(id, "http://records.nsw.gov.au/agencies/"), "http://www.records.nsw.gov.au/terms/Agency")
-}
-
-func MakeOrganization(name string) Agent {
-	return MakeAgent(name, "", "http://schema.org/Organization")
-}
-
+// Thing can be anything that a metadata is "about"
 type Thing interface{}
 
+// Business is a type of Thing. It is used for the BRS project
 type Business struct {
 	Typ                string   `json:"@type,omitempty"`
 	LegalName          string   `json:"legalName,omitempty"`
@@ -63,6 +44,54 @@ type Business struct {
 	Proprietors        []Agent  `json:"proprietors,omitempty"`
 }
 
+// NewMetadata returns a Metadata with the supplied title. It also sets the @type.
+func NewMetadata(title string) *Metadata {
+	return &Metadata{
+		Typ:   []string{"http://www.records.nsw.gov.au/terms/DigitalArchive"},
+		Title: title,
+	}
+}
+
+// MakeAgent returns an Agent with the given name, @id and @type.
+// If @id and @type aren't given, the Agent is a simple string e.g. "Richard Lehane"
+func MakeAgent(name, id, typ string) Agent {
+	if id == "" && typ == "" {
+		return name
+	}
+	return Obj{
+		ID:   id,
+		Typ:  typ,
+		Name: name,
+	}
+}
+
+// MakePerson creates an Agent that is of @type terms/Person. Sets the @id to the supplied value.
+func MakePerson(name string, id int) Agent {
+	return MakeAgent(name, ToID(id, "http://www.records.nsw.gov.au/persons/"), "http://www.records.nsw.gov.au/terms/Person")
+}
+
+// MakePerson creates an Agent that is of @type terms/Agency. Sets the @id to the supplied value.
+func MakeAgency(name string, id int) Agent {
+	return MakeAgent(name, ToID(id, "http://records.nsw.gov.au/agencies/"), "http://www.records.nsw.gov.au/terms/Agency")
+}
+
+// MakePerson creates an Agent that is of @type schema.org/Organization.
+func MakeOrganization(name string) Agent {
+	return MakeAgent(name, "", "http://schema.org/Organization")
+}
+
+// ToSeries turns a series number into an IRI @id
+func ToSeries(i int) string {
+	return ToID(i, "http://www.records.nsw.gov.au/series/")
+}
+
+// ToConsignment turns a consignment number into an IRI @id
+func ToConsignment(i int) string {
+	return ToID(i, "http://www.records.nsw.gov.au/consignment/")
+}
+
+// MakeBusiness returns a Thing of @type schema.org/Organization and sets the supplied fields.
+// A variable number of proprietors can be supplied and these will be set as a slice of Organizations.
 func MakeBusiness(legalName, commencedTrading, ceasedTrading, renewalDueDate, registrationNumber, abn string, proprietors ...string) Thing {
 	props := make([]Agent, len(proprietors))
 	for i, v := range proprietors {
@@ -81,15 +110,6 @@ func MakeBusiness(legalName, commencedTrading, ceasedTrading, renewalDueDate, re
 
 }
 
-func NewMetadata(title, created string, series int) *Metadata {
-	return &Metadata{
-		Typ:     []string{"http://www.records.nsw.gov.au/terms/DigitalArchive"},
-		Title:   title,
-		Created: NewDate(created),
-		Series:  ToID(series, "http://www.records.nsw.gov.au/series/"),
-	}
-}
-
 var metadataContext = Context{
 	"abn":              "https://www.wikidata.org/wiki/Q4823913",
 	"about":            "http://schema.org/about",
@@ -98,17 +118,17 @@ var metadataContext = Context{
 	"ceasedTrading":    "http://schema.org/dissolutionDate",
 	"class":            "http://www.records.nsw.gov.au/terms/disposalClass",
 	"commencedTrading": "http://schema.org/foundingDate",
-	"consignment": ObjField{
+	"consignment": Obj{
 		ID:  "http://records.nsw.gov.au/terms/consignment",
 		Typ: "@id",
 	},
-	"created": ObjField{
+	"created": Obj{
 		ID:  "http://purl.org/dc/terms/created",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
 	"creators": "http://purl.org/dc/terms/creator",
 	"director": "http://schema.org/director",
-	"disposalRules": ObjField{
+	"disposalRules": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/disposalRules",
 		Typ: "http://www.records.nsw.gov.au/terms/DisposalRule",
 	},
@@ -119,11 +139,11 @@ var metadataContext = Context{
 	"productionCompany":  "http://schema.org/productionCompany",
 	"proprietors":        "http://www.records.nsw.gov.au/terms/proprietors",
 	"registrationNumber": "http://www.records.nsw.gov.au/terms/registrationNumber",
-	"renewalDueDate": ObjField{
+	"renewalDueDate": Obj{
 		ID:  "http://www.records.nsw.gov.au/terms/renewalDueDate",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
-	"series": ObjField{
+	"series": Obj{
 		ID:  "http://records.nsw.gov.au/terms/series",
 		Typ: "@id",
 	},

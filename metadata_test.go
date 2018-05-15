@@ -3,11 +3,13 @@ package meta
 import "testing"
 
 func TestMetadata(t *testing.T) {
-	m := NewMetadata("Business Name Registration - Duntryleague Country Club", "1902-01-01", 21404)
+	m := NewMetadata("Business Name Registration - Duntryleague Country Club")
 	m.Typ = append(m.Typ, "http://schema.org/Movie")
+	m.Created = NewDate("1902-01-01")
 	m.Creators = []Agent{MakeAgency("Office of Fair Trading", 0), MakePerson("Michael Bruce Baird", 288)}
 	m.Source = "https://twitter.com/"
-	m.Consignment = ToID(189087, "http://www.records.nsw.gov.au/consignment/")
+	m.Series = ToSeries(21404)
+	m.Consignment = ToConsignment(189087)
 	m.DisposalRules = []DisposalRule{{Authority: "DA48", Class: "1.1.1.2"}}
 	m.Duration = "13:47:30"
 	m.Language = "en"

@@ -8,17 +8,23 @@ import (
 	"sort"
 )
 
+// Context generates the @context field in json output
 type Context map[string]Field
 
+// Fields are typically plain strings or objects with @id/@type
 type Field interface{}
 
-type ObjField struct {
+// Obj is a json object. Used with @id/@type in @context.
+// Can also be used to generate generic objects e.g. Agents in metadata are Objs.
+type Obj struct {
 	ID        string `json:"@id,omitempty"`
 	Typ       string `json:"@type,omitempty"`
 	Container string `json:"@container,omitempty"`
 	Name      string `json:"name,omitempty"`
 }
 
+// populate reads v as json and infers the @context necessary to describe this json file.
+// This function is called internally by the Output() function.
 func populate(templ Context, v interface{}) (Context, error) {
 	b, err := json.Marshal(v)
 	if err != nil {
@@ -38,6 +44,7 @@ func populate(templ Context, v interface{}) (Context, error) {
 	return ret, nil
 }
 
+// reads json and returns a list of unique keys
 func keys(b []byte) ([]string, error) {
 	dec := json.NewDecoder(bytes.NewBuffer(b))
 	// store unique keys in kmap
