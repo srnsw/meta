@@ -55,8 +55,12 @@ func (m *Meta) Output(target string, actions ...Action) error {
 // Sample generates metadata.json and manifest.json files for a sample of a Meta's metadata.
 // Arbitrary actions based on that data can also be called by this function.
 // For testing provide a sample size e.g. 10 and an index where you'd like the sample to start.
+// If a negative index is provided then the index will be calculated from the end. I.e. -10 will return the final 10.
 // Target is the target output directory.
 func (m *Meta) Sample(index, sample int, target string, actions ...Action) error {
+	if index < 0 && index > 0-len(m.Index) {
+		index = len(m.Index) + index
+	}
 	for i, v := range m.Index {
 		if i < index {
 			continue
