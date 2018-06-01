@@ -16,6 +16,7 @@ type Meta struct {
 	Index    []string
 	Metadata map[string]*Metadata
 	Manifest map[string]*Manifest
+	Logs     map[string][]*Log
 	Store    map[string]interface{}
 }
 
@@ -28,7 +29,7 @@ type Loader interface {
 }
 
 // Action is a function (such as file copy) that is called when generating output
-type Action func(target, index string, metadata *Metadata, manifest *Manifest, store interface{}) error
+type Action func(meta *Meta, target, index string) error
 
 // New creates a new meta from the supplied loaders
 func New(loaders ...Loader) (*Meta, error) {
@@ -36,6 +37,7 @@ func New(loaders ...Loader) (*Meta, error) {
 		make([]string, 0, Cap),
 		make(map[string]*Metadata),
 		make(map[string]*Manifest),
+		make(map[string][]*Log),
 		make(map[string]interface{})}
 	for _, l := range loaders {
 		if err := l.Load(m); err != nil {
@@ -69,13 +71,19 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 			return nil
 		}
 		sample--
-		meta, man, store := m.Metadata[v], m.Manifest[v], m.Store[v]
 		// make the output directory, which is an incrementing integer
 		out := filepath.Join(target, strconv.Itoa(i))
 		err := os.MkdirAll(out, os.ModePerm)
 		if err != nil {
 			return err
 		}
+		// execute the actions
+		for _, a := range actions {
+			if err := a(m, out, v); err != nil {
+				return err
+			}
+		}
+		meta, man := m.Metadata[v], m.Manifest[v]
 		// create metadata.json
 		ctx, err := populate(metadataContext, meta)
 		if err != nil {
@@ -102,9 +110,27 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 		if err = ioutil.WriteFile(filepath.Join(out, "manifest.json"), j, os.ModePerm); err != nil {
 			return err
 		}
-		// finally, execute the actions
-		for _, a := range actions {
-			if err := a(out, v, meta, man, store); err != nil {
+		// create logs
+		logs, ok := m.Logs[v]
+		if !ok {
+			continue
+		}
+		logdir := filepath.Join(out, "logs")
+		err = os.MkdirAll(logdir, os.ModePerm)
+		if err != nil {
+			return err
+		}
+		for ii, log := range logs {
+			ctx, err = populate(logContext, log)
+			if err != nil {
+				return err
+			}
+			log.Context = ctx
+			j, err = json.MarshalIndent(log, "", "  ")
+			if err != nil {
+				return err
+			}
+			if err = ioutil.WriteFile(filepath.Join(logdir, strconv.Itoa(ii)+".json"), j, os.ModePerm); err != nil {
 				return err
 			}
 		}

@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"testing"
-	"time"
 )
 
 func compareJSON(b1, b2 []byte) (bool, error) {
@@ -45,11 +44,6 @@ func compare(v interface{}, fn string) error {
 	return nil
 }
 
-func newTime(s string) *time.Time {
-	t, _ := ParseDateTime(s)
-	return &t
-}
-
 func TestManifest(t *testing.T) {
 	m := NewManifest()
 	arid, err := m.AddAR("2016-05-23", "global", true, 1296, "Early", []FileTarget{{0, 0}, {0, 2}, {0, 3}}, []FileTarget{{1, 0}}, []FileTarget{{1, 1}})
@@ -60,10 +54,10 @@ func TestManifest(t *testing.T) {
 	m.AddVersion("versions/0", []string{arid}, []File{
 		{
 			Name:         "index.html",
-			OriginalName: "Teddies photos\\Materials_teddies_44250.jpg",
+			OriginalName: "Teddies photos\\Materials_teddies_44250.htm",
 			Size:         4026,
-			Created:      newTime("2015-04-20T17:41:48+10:00"),
-			Modified:     newTime("2015-04-20T17:41:48+10:00"),
+			Created:      NewDateTime("2015-04-20T17:41:48+10:00"),
+			Modified:     NewDateTime("2015-04-20T17:41:48+10:00"),
 			MIME:         "text/html",
 			PUID:         "http://www.nationalarchives.gov.uk/pronom/fmt/24",
 			Hash: &Hash{
@@ -71,6 +65,22 @@ func TestManifest(t *testing.T) {
 				Value:     "hfuehwoiuhfoeihjwpoih0197626",
 			},
 		}})
+	m.AddVersion("versions/1", []string{arid}, []File{
+		{
+			Name:         "styles.css",
+			OriginalName: "Teddies photos\\Materials_teddies_44250.css",
+			Size:         4026,
+			Created:      NewDateTime("2015-04-20T17:41:49+10:00"),
+			Modified:     NewDateTime("2015-04-20T17:41:49+10:00"),
+			MIME:         "text/css",
+			PUID:         "http://www.nationalarchives.gov.uk/pronom/fmt/10",
+			Hash: &Hash{
+				Algorithm: "md5",
+				Value:     "dfuehwoiuhfoeihjwpoih0197626",
+			},
+		}})
+	m.Versions[1].DerivedFrom = ReferenceVersion(0)
+	m.Versions[1].GeneratedBy = ReferenceLog(0)
 	// create manifest.json
 	ctx, err := populate(manifestContext, m)
 	if err != nil {

@@ -2,31 +2,49 @@ package meta
 
 // Metadata represents a metadata.json file
 type Metadata struct {
-	Typ               []string       `json:"@type"`
-	Title             string         `json:"title"`
-	Created           *W3CDate       `json:"created,omitempty"`
-	Creators          []Agent        `json:"creators,omitempty"`
-	Source            string         `json:"source,omitempty"`
-	Series            string         `json:"series,omitempty"`
-	Consignment       string         `json:"consignment,omitempty"`
-	DisposalRules     []DisposalRule `json:"disposalRules,omitempty"`
-	Duration          string         `json:"duration,omitempty"`
-	Language          string         `json:"language,omitempty"`
-	Subtitles         string         `json:"subtitles,omitempty"`
-	Director          string         `json:"director,omitempty"`
-	Actor             string         `json:"actor,omitempty"`
-	ProductionCompany string         `json:"productionCompany,omitempty"`
-	About             Thing          `json:"about,omitempty"`
-	Context           Context        `json:"@context"`
+	Typ               VarStr   `json:"@type"`
+	Title             string   `json:"title"`
+	Created           *W3CDate `json:"created,omitempty"`
+	Creator           Agent    `json:"creator,omitempty"`
+	Source            VarStr   `json:"source,omitempty"`
+	Series            string   `json:"series,omitempty"`
+	Consignment       string   `json:"consignment,omitempty"`
+	DisposalRule      Disposal `json:"disposalRule,omitempty"`
+	Duration          string   `json:"duration,omitempty"`
+	Language          VarStr   `json:"language,omitempty"`
+	Subtitles         VarStr   `json:"subtitles,omitempty"`
+	Director          VarStr   `json:"director,omitempty"`
+	Actor             VarStr   `json:"actor,omitempty"`
+	ProductionCompany VarStr   `json:"productionCompany,omitempty"`
+	About             Thing    `json:"about,omitempty"`
+	Context           Context  `json:"@context"`
 }
 
-// DisposalRule represents disposalRules
+// VarStr represents a single string or a slice of strings
+type VarStr interface{}
+
+func copyVarStr(v VarStr) VarStr {
+	if v == nil {
+		return nil
+	}
+	if str, ok := v.(string); ok {
+		return str
+	}
+	strs := v.([]string)
+	ret := make([]string, len(strs))
+	copy(ret, strs)
+	return ret
+}
+
+// Disposal can be a single DisposalRule{} or a slice of []DisposalRule{}
+type Disposal interface{}
+
 type DisposalRule struct {
 	Authority string `json:"authority"`
 	Class     string `json:"class"`
 }
 
-// Agent can be a string e.g. "Richard Lehane" or an object with @id/@type
+// Agent can be a string e.g. "Richard Lehane" or an object with @id/@type, or a slice of Agents
 type Agent interface{}
 
 // Thing can be anything that a metadata is "about"
@@ -41,15 +59,26 @@ type Business struct {
 	RenewalDueDate     *W3CDate `json:"renewalDueDate,omitempty"`
 	RegistrationNumber string   `json:"registrationNumber,omitempty"`
 	ABN                string   `json:"abn,omitempty"`
-	Proprietors        []Agent  `json:"proprietors,omitempty"`
+	Proprietor         Agent    `json:"proprietor,omitempty"`
 }
 
 // NewMetadata returns a Metadata with the supplied title. It also sets the @type.
 func NewMetadata(title string) *Metadata {
 	return &Metadata{
-		Typ:   []string{"http://www.records.nsw.gov.au/terms/DigitalArchive"},
+		Typ:   "http://records.nsw.gov.au/terms/DigitalArchive",
 		Title: title,
 	}
+}
+
+// Metadata can have multiple types e.g. both an DigitalArchive and a Movie
+func (m *Metadata) AddType(typ string) {
+	if str, ok := m.Typ.(string); ok {
+		m.Typ = []string{str, typ}
+		return
+	}
+	strs := m.Typ.([]string)
+	m.Typ = append(strs, typ)
+	return
 }
 
 // MakeAgent returns an Agent with the given name, @id and @type.
@@ -65,14 +94,19 @@ func MakeAgent(name, id, typ string) Agent {
 	}
 }
 
+// MakeSDOPerson creates an Agent that is of @type schema.org/Person. Does not set an @id.
+func MakeSDOPerson(name string) Agent {
+	return MakeAgent(name, "", "http://schema.org/Person")
+}
+
 // MakePerson creates an Agent that is of @type terms/Person. Sets the @id to the supplied value.
 func MakePerson(name string, id int) Agent {
-	return MakeAgent(name, ToID(id, "http://www.records.nsw.gov.au/persons/"), "http://www.records.nsw.gov.au/terms/Person")
+	return MakeAgent(name, ToID(id, "http://records.nsw.gov.au/persons/"), "http://records.nsw.gov.au/terms/Person")
 }
 
 // MakePerson creates an Agent that is of @type terms/Agency. Sets the @id to the supplied value.
 func MakeAgency(name string, id int) Agent {
-	return MakeAgent(name, ToID(id, "http://records.nsw.gov.au/agencies/"), "http://www.records.nsw.gov.au/terms/Agency")
+	return MakeAgent(name, ToID(id, "http://records.nsw.gov.au/agencies/"), "http://records.nsw.gov.au/terms/Agency")
 }
 
 // MakePerson creates an Agent that is of @type schema.org/Organization.
@@ -82,20 +116,27 @@ func MakeOrganization(name string) Agent {
 
 // ToSeries turns a series number into an IRI @id
 func ToSeries(i int) string {
-	return ToID(i, "http://www.records.nsw.gov.au/series/")
+	return ToID(i, "http://records.nsw.gov.au/series/")
 }
 
 // ToConsignment turns a consignment number into an IRI @id
 func ToConsignment(i int) string {
-	return ToID(i, "http://www.records.nsw.gov.au/consignment/")
+	return ToID(i, "http://records.nsw.gov.au/consignment/")
 }
 
 // MakeBusiness returns a Thing of @type schema.org/Organization and sets the supplied fields.
 // A variable number of proprietors can be supplied and these will be set as a slice of Organizations.
 func MakeBusiness(legalName, commencedTrading, ceasedTrading, renewalDueDate, registrationNumber, abn string, proprietors ...string) Thing {
-	props := make([]Agent, len(proprietors))
-	for i, v := range proprietors {
-		props[i] = MakeOrganization(v)
+	var props Agent
+	if len(proprietors) > 0 {
+		if len(proprietors) > 1 {
+			props := make([]Agent, len(proprietors))
+			for i, v := range proprietors {
+				props[i] = MakeOrganization(v)
+			}
+		} else {
+			props = MakeOrganization(proprietors[0])
+		}
 	}
 	return Business{
 		Typ:                "http://schema.org/Organization",
@@ -105,7 +146,7 @@ func MakeBusiness(legalName, commencedTrading, ceasedTrading, renewalDueDate, re
 		RenewalDueDate:     NewDate(renewalDueDate),
 		RegistrationNumber: registrationNumber,
 		ABN:                abn,
-		Proprietors:        props,
+		Proprietor:         props,
 	}
 
 }
@@ -114,9 +155,9 @@ var metadataContext = Context{
 	"abn":              "https://www.wikidata.org/wiki/Q4823913",
 	"about":            "http://schema.org/about",
 	"actor":            "http://schema.org/actor",
-	"authority":        "http://www.records.nsw.gov.au/terms/disposalAuthority",
+	"authority":        "http://records.nsw.gov.au/terms/disposalAuthority",
 	"ceasedTrading":    "http://schema.org/dissolutionDate",
-	"class":            "http://www.records.nsw.gov.au/terms/disposalClass",
+	"class":            "http://records.nsw.gov.au/terms/disposalClass",
 	"commencedTrading": "http://schema.org/foundingDate",
 	"consignment": Obj{
 		ID:  "http://records.nsw.gov.au/terms/consignment",
@@ -126,21 +167,21 @@ var metadataContext = Context{
 		ID:  "http://purl.org/dc/terms/created",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
-	"creators": "http://purl.org/dc/terms/creator",
+	"creator":  "http://purl.org/dc/terms/creator",
 	"director": "http://schema.org/director",
-	"disposalRules": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/disposalRules",
-		Typ: "http://www.records.nsw.gov.au/terms/DisposalRule",
+	"disposalRule": Obj{
+		ID:  "http://records.nsw.gov.au/terms/disposalRule",
+		Typ: "http://records.nsw.gov.au/terms/DisposalRule",
 	},
 	"duration":           "http://schema.org/duration",
 	"language":           "http://schema.org/inLanguage",
 	"legalName":          "http://schema.org/legalName",
 	"name":               "http://schema.org/name",
 	"productionCompany":  "http://schema.org/productionCompany",
-	"proprietors":        "http://www.records.nsw.gov.au/terms/proprietors",
-	"registrationNumber": "http://www.records.nsw.gov.au/terms/registrationNumber",
+	"proprietor":         "http://records.nsw.gov.au/terms/proprietor",
+	"registrationNumber": "http://records.nsw.gov.au/terms/registrationNumber",
 	"renewalDueDate": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/renewalDueDate",
+		ID:  "http://records.nsw.gov.au/terms/renewalDueDate",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
 	"series": Obj{

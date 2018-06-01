@@ -16,16 +16,16 @@ type Manifest struct {
 
 // AccessRule represents accessRules
 type AccessRule struct {
-	ID           string   `json:"@id"`
-	ExecuteDate  W3CDate  `json:"executeDate"`
-	Scope        string   `json:"scope"`
-	Publish      bool     `json:"publish"`
-	Basis        *Basis   `json:"basis,omitempty"`
-	Patch        *int     `json:"metadataPatch,omitempty"`
-	FullManifest *bool    `json:"fullManifest,omitempty"`
-	Display      []string `json:"displayTarget,omitempty"`
-	Preview      []string `json:"previewTarget,omitempty"`
-	Text         []string `json:"textTarget,omitempty"`
+	ID           string  `json:"@id"`
+	ExecuteDate  W3CDate `json:"executeDate"`
+	Scope        string  `json:"scope"`
+	Publish      bool    `json:"publish"`
+	Basis        *Basis  `json:"basis,omitempty"`
+	Patch        *int    `json:"metadataPatch,omitempty"`
+	FullManifest *bool   `json:"fullManifest,omitempty"`
+	Display      VarStr  `json:"displayTarget,omitempty"`
+	Preview      VarStr  `json:"previewTarget,omitempty"`
+	Text         VarStr  `json:"textTarget,omitempty"`
 }
 
 // Basis is a json basis
@@ -38,6 +38,8 @@ type Basis struct {
 type Version struct {
 	ID             string   `json:"@id"`
 	Base           string   `json:"base,omitempty"`
+	DerivedFrom    string   `json:"derivedFrom,omitempty"`
+	GeneratedBy    string   `json:"generatedBy,omitempty"`
 	HasAccessRules []string `json:"hasAccessRules,omitempty"`
 	Files          []File   `json:"files"`
 }
@@ -65,7 +67,7 @@ type Hash struct {
 // NewManifest returns a reference to a manifest. It also sets the @type field.
 func NewManifest() *Manifest {
 	return &Manifest{
-		Type: "http://www.records.nsw.gov.au/terms/Manifest",
+		Type: "http://records.nsw.gov.au/terms/Manifest",
 	}
 }
 
@@ -109,7 +111,7 @@ func AppendAR(rules []AccessRule,
 	var basis *Basis
 	if accessDirection > 0 {
 		basis = &Basis{
-			AccessDirection:   ToID(accessDirection, "http://www.records.nsw.gov.au/accessDirection/"),
+			AccessDirection:   ToID(accessDirection, "http://records.nsw.gov.au/accessDirection/"),
 			AccessDescription: accessDescription,
 		}
 	}
@@ -120,9 +122,9 @@ func AppendAR(rules []AccessRule,
 		Scope:       scope,
 		Publish:     publish,
 		Basis:       basis,
-		Display:     referenceFiles(display),
-		Preview:     referenceFiles(preview),
-		Text:        referenceFiles(text),
+		Display:     ReferenceFiles(display),
+		Preview:     ReferenceFiles(preview),
+		Text:        ReferenceFiles(text),
 	}), arid, nil
 }
 
@@ -130,7 +132,7 @@ func AppendAR(rules []AccessRule,
 // It takes the base (e.g. "versions/0"), a slice of access rules, and a slice of files.
 // It returns the version @id.
 func (m *Manifest) AddVersion(base string, rules []string, files []File) string {
-	vid := ReferenceN(Ref{"v", len(m.Versions)})
+	vid := ReferenceVersion(len(m.Versions))
 	for i, _ := range files {
 		files[i].ID = ReferenceN(Ref{"v", len(m.Versions)}, Ref{"f", i})
 	}
@@ -155,12 +157,6 @@ func CopyARs(ar []AccessRule) []AccessRule {
 // copy by reference is fine for most fields of an AccessRule,
 // except we don't want display/preview/text to be copied by reference
 func copyAR(ar AccessRule) AccessRule {
-	dis := make([]string, len(ar.Display))
-	copy(dis, ar.Display)
-	prev := make([]string, len(ar.Preview))
-	copy(dis, ar.Preview)
-	txt := make([]string, len(ar.Text))
-	copy(dis, ar.Text)
 	return AccessRule{
 		ID:           ar.ID,
 		ExecuteDate:  ar.ExecuteDate,
@@ -169,9 +165,9 @@ func copyAR(ar AccessRule) AccessRule {
 		Basis:        ar.Basis,
 		Patch:        ar.Patch,
 		FullManifest: ar.FullManifest,
-		Display:      dis,
-		Preview:      prev,
-		Text:         txt,
+		Display:      copyVarStr(ar.Display),
+		Preview:      copyVarStr(ar.Preview),
+		Text:         copyVarStr(ar.Text),
 	}
 }
 
@@ -201,7 +197,17 @@ func (ft FileTarget) String() string {
 	)
 }
 
-func referenceFiles(ts []FileTarget) []string {
+func ReferenceVersion(v int) string {
+	return ReferenceN(Ref{"v", v})
+}
+
+func ReferenceFiles(ts []FileTarget) VarStr {
+	if len(ts) == 0 {
+		return nil
+	}
+	if len(ts) == 1 {
+		return ts[0].String()
+	}
 	ret := make([]string, len(ts))
 	for i, v := range ts {
 		ret[i] = v.String()
@@ -210,26 +216,30 @@ func referenceFiles(ts []FileTarget) []string {
 }
 
 var manifestContext = Context{
-	"accessDescription": "http://www.records.nsw.gov.au/terms/accessDescription",
+	"accessDescription": "http://records.nsw.gov.au/terms/accessDescription",
 	"accessDirection": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/accessDirection",
+		ID:  "http://records.nsw.gov.au/terms/accessDirection",
 		Typ: "@id",
 	},
 	"accessRules": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/accessRules",
-		Typ: "http://www.records.nsw.gov.au/terms/AccessRule",
+		ID:  "http://records.nsw.gov.au/terms/accessRules",
+		Typ: "http://records.nsw.gov.au/terms/AccessRule",
 	},
-	"base": "http://www.records.nsw.gov.au/terms/base",
+	"base": "http://records.nsw.gov.au/terms/base",
 	"basis": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/basis",
-		Typ: "http://www.records.nsw.gov.au/terms/Basis",
+		ID:  "http://records.nsw.gov.au/terms/basis",
+		Typ: "http://records.nsw.gov.au/terms/Basis",
+	},
+	"derivedFrom": Obj{
+		ID:  "http://www.w3.org/ns/prov#wasDerivedFrom",
+		Typ: "@id",
 	},
 	"displayTarget": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/displayTarget",
+		ID:  "http://records.nsw.gov.au/terms/displayTarget",
 		Typ: "@id",
 	},
 	"executeDate": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/executeDate",
+		ID:  "http://records.nsw.gov.au/terms/executeDate",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
 	"fileCreated": Obj{
@@ -241,11 +251,15 @@ var manifestContext = Context{
 		Typ: "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject",
 	},
 	"fullManifest": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/fullManifest",
+		ID:  "http://records.nsw.gov.au/terms/fullManifest",
 		Typ: "http://www.w3.org/2001/XMLSchema#boolean",
 	},
+	"generatedBy": Obj{
+		ID:  "http://www.w3.org/ns/prov#wasGeneratedBy",
+		Typ: "@id",
+	},
 	"hasAccessRules": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/hasAccessRules",
+		ID:  "http://records.nsw.gov.au/terms/hasAccessRules",
 		Typ: "@id",
 	},
 	"hash":          "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hasHash",
@@ -262,28 +276,28 @@ var manifestContext = Context{
 	"name":         "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileName",
 	"originalName": "http://id.loc.gov/vocabulary/preservation/hasOriginalName",
 	"previewTarget": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/previewTarget",
+		ID:  "http://records.nsw.gov.au/terms/previewTarget",
 		Typ: "@id",
 	},
 	"publish": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/publish",
+		ID:  "http://records.nsw.gov.au/terms/publish",
 		Typ: "http://www.w3.org/2001/XMLSchema#boolean",
 	},
 	"puid": Obj{
 		ID:  "http://purl.org/dc/terms/format",
 		Typ: "@id",
 	},
-	"scope": "http://www.records.nsw.gov.au/terms/scope",
+	"scope": "http://records.nsw.gov.au/terms/scope",
 	"size": Obj{
 		ID:  "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileSize",
 		Typ: "http://www.w3.org/2001/XMLSchema#integer",
 	},
 	"textTarget": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/textTarget",
+		ID:  "http://records.nsw.gov.au/terms/textTarget",
 		Typ: "@id",
 	},
 	"versions": Obj{
-		ID:  "http://www.records.nsw.gov.au/terms/versions",
-		Typ: "http://www.records.nsw.gov.au/terms/Version",
+		ID:  "http://records.nsw.gov.au/terms/versions",
+		Typ: "http://records.nsw.gov.au/terms/Version",
 	},
 }
