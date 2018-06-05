@@ -2,6 +2,7 @@ package meta
 
 // Metadata represents a metadata.json file
 type Metadata struct {
+	ID                string   `json:"@id"`
 	Typ               VarStr   `json:"@type"`
 	Title             string   `json:"title"`
 	Created           *W3CDate `json:"created,omitempty"`
@@ -63,8 +64,9 @@ type Business struct {
 }
 
 // NewMetadata returns a Metadata with the supplied title. It also sets the @type.
-func NewMetadata(title string) *Metadata {
+func NewMetadata(id int, title string) *Metadata {
 	return &Metadata{
+		ID:    ReferenceObject(id),
 		Typ:   "http://records.nsw.gov.au/terms/DigitalArchive",
 		Title: title,
 	}

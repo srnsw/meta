@@ -3,7 +3,7 @@ package meta
 import "testing"
 
 func TestMetadata(t *testing.T) {
-	m := NewMetadata("Business Name Registration - Duntryleague Country Club")
+	m := NewMetadata(0, "Business Name Registration - Duntryleague Country Club")
 	m.AddType("http://schema.org/Movie")
 	m.Created = NewDate("1902-01-01")
 	m.Creator = []Agent{MakeAgency("Office of Fair Trading", 0), MakePerson("Michael Bruce Baird", 288)}
