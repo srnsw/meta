@@ -149,6 +149,15 @@ func ToID(i int, pat string) string {
 	return pat + strconv.Itoa(i)
 }
 
+// ToRef is a helper function that turns an integer identififier into a string ref:I reference.
+// It is used for placedholder IDs like log:1 that get swapped out by the Migrate tool.
+func ToRef(i int, ref string) string {
+	if i < 0 {
+		return ""
+	}
+	return ref + ":" + strconv.Itoa(i)
+}
+
 // ReadAll is a helper function that opens a file at path and reads as a CSV.
 // Returns a slice of string slices and an error.
 func ReadAll(path string) ([][]string, error) {

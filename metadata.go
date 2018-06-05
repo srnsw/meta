@@ -151,6 +151,18 @@ func MakeBusiness(legalName, commencedTrading, ceasedTrading, renewalDueDate, re
 
 }
 
+// ReferenceObject makes a temporary reference to another object in the consignment.
+// This reference is swapped for a UUID by the migrate tool.
+func ReferenceObject(i int) string {
+	return ToRef(i, "obj")
+}
+
+// ReferenceMigration makes a temporary reference to another migration (that doesn't yet have a UUID).
+// This reference is swapped for a UUID by the migrate tool.
+func ReferenceMigration(i int) string {
+	return ToRef(i, "mig")
+}
+
 var metadataContext = Context{
 	"abn":              "https://www.wikidata.org/wiki/Q4823913",
 	"about":            "http://schema.org/about",

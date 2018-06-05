@@ -48,7 +48,7 @@
       "@id": "_:v1",
       "base": "versions/1",
       "derivedFrom": "_:v0",
-      "generatedBy": "$log{0}",
+      "generatedBy": "log:0",
       "hasAccessRules": [
         "_:ar0"
       ],

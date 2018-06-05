@@ -1,10 +1,9 @@
 package meta
 
-import (
-	"fmt"
-	"time"
-)
+import "time"
 
+// Log represents a preservation event e.g. format migration.
+// The PROV and PREMIS ontologies are primarily used for this metadata.
 type Log struct {
 	ID      string     `json:"@id"`
 	Typ     string     `json:"@type"` // from http://id.loc.gov/vocabulary/preservation/eventType.html e.g. http://id.loc.gov/vocabulary/preservation/eventType/mig
@@ -19,6 +18,7 @@ const (
 	MigrationEvent = "http://id.loc.gov/vocabulary/preservation/eventType/mig"
 )
 
+// NewLog creates a *Log
 func NewLog(id int, typ string) *Log {
 	return &Log{
 		ID:  ReferenceLog(id),
@@ -26,8 +26,10 @@ func NewLog(id int, typ string) *Log {
 	}
 }
 
+// ReferenceLog makes a temporary reference to a log event.
+// This reference is swapped for a UUID by the migrate tool.
 func ReferenceLog(i int) string {
-	return fmt.Sprintf("$log{%d}", i)
+	return ToRef(i, "log")
 }
 
 var logContext = Context{

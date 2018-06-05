@@ -1,5 +1,5 @@
 {
-  "@id": "$log{0}",
+  "@id": "log:0",
   "@type": "http://id.loc.gov/vocabulary/preservation/eventType/mig",
   "startTime": "2015-04-20T17:41:48+10:00",
   "endTime": "2015-04-20T17:42:00+10:00",
