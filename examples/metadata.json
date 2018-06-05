@@ -1,5 +1,6 @@
 {
   "@id": "obj:0",
+  "migration": "mig:0",
   "@type": [
     "http://records.nsw.gov.au/terms/DigitalArchive",
     "http://schema.org/Movie"
@@ -68,6 +69,10 @@
     "duration": "http://schema.org/duration",
     "language": "http://schema.org/inLanguage",
     "legalName": "http://schema.org/legalName",
+     "migration": {
+      "@id": "http://records.nsw.gov.au/terms/migration",
+      "@type": "@id"
+    },
     "name": "http://schema.org/name",
     "productionCompany": "http://schema.org/productionCompany",
     "proprietor": "http://records.nsw.gov.au/terms/proprietor",

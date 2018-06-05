@@ -3,6 +3,7 @@ package meta
 // Metadata represents a metadata.json file
 type Metadata struct {
 	ID                string   `json:"@id"`
+	Migration         string   `json:"migration"`
 	Typ               VarStr   `json:"@type"`
 	Title             string   `json:"title"`
 	Created           *W3CDate `json:"created,omitempty"`
@@ -66,9 +67,10 @@ type Business struct {
 // NewMetadata returns a Metadata with the supplied title. It also sets the @type.
 func NewMetadata(id int, title string) *Metadata {
 	return &Metadata{
-		ID:    ReferenceObject(id),
-		Typ:   "http://records.nsw.gov.au/terms/DigitalArchive",
-		Title: title,
+		ID:        ReferenceObject(id),
+		Migration: "mig:0",
+		Typ:       "http://records.nsw.gov.au/terms/DigitalArchive",
+		Title:     title,
 	}
 }
 
@@ -187,9 +189,13 @@ var metadataContext = Context{
 		ID:  "http://records.nsw.gov.au/terms/disposalRule",
 		Typ: "http://records.nsw.gov.au/terms/DisposalRule",
 	},
-	"duration":           "http://schema.org/duration",
-	"language":           "http://schema.org/inLanguage",
-	"legalName":          "http://schema.org/legalName",
+	"duration":  "http://schema.org/duration",
+	"language":  "http://schema.org/inLanguage",
+	"legalName": "http://schema.org/legalName",
+	"migration": Obj{
+		ID:  "http://records.nsw.gov.au/terms/migration",
+		Typ: "@id",
+	},
 	"name":               "http://schema.org/name",
 	"productionCompany":  "http://schema.org/productionCompany",
 	"proprietor":         "http://records.nsw.gov.au/terms/proprietor",
