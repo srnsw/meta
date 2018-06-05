@@ -129,18 +129,18 @@ func AppendAR(rules []AccessRule,
 }
 
 // AddVersion adds a new version to a Manifest.
-// It takes the base (e.g. "versions/0"), a slice of access rules, and a slice of files.
+// It takes a slice of access rules, and a slice of files.
 // It returns the version @id.
-func (m *Manifest) AddVersion(base string, rules []string, files []File) string {
+func (m *Manifest) AddVersion(files []File) string {
 	vid := ReferenceVersion(len(m.Versions))
 	for i, _ := range files {
 		files[i].ID = ReferenceN(Ref{"v", len(m.Versions)}, Ref{"f", i})
 	}
+	base := "versions/" + strconv.Itoa(len(m.Versions))
 	m.Versions = append(m.Versions, Version{
-		ID:             vid,
-		Base:           base,
-		HasAccessRules: rules,
-		Files:          files,
+		ID:    vid,
+		Base:  base,
+		Files: files,
 	})
 	return vid
 }

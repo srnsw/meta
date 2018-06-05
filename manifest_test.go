@@ -51,7 +51,7 @@ func TestManifest(t *testing.T) {
 		t.Fatal(err)
 	}
 	m.AccessRules[0].FullManifest = new(bool) // fullManifest needs to be manually set
-	m.AddVersion("versions/0", []string{arid}, []File{
+	m.AddVersion([]File{
 		{
 			Name:         "index.html",
 			OriginalName: "Teddies photos\\Materials_teddies_44250.htm",
@@ -65,7 +65,7 @@ func TestManifest(t *testing.T) {
 				Value:     "hfuehwoiuhfoeihjwpoih0197626",
 			},
 		}})
-	m.AddVersion("versions/1", []string{arid}, []File{
+	m.AddVersion([]File{
 		{
 			Name:         "styles.css",
 			OriginalName: "Teddies photos\\Materials_teddies_44250.css",
@@ -79,6 +79,8 @@ func TestManifest(t *testing.T) {
 				Value:     "dfuehwoiuhfoeihjwpoih0197626",
 			},
 		}})
+	m.Versions[0].HasAccessRules = []string{arid}
+	m.Versions[1].HasAccessRules = []string{arid}
 	m.Versions[1].DerivedFrom = ReferenceVersion(0)
 	m.Versions[1].GeneratedBy = ReferenceLog(0)
 	// create manifest.json
