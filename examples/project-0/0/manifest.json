@@ -1,0 +1,148 @@
+{
+  "@type": "http://records.nsw.gov.au/terms/Manifest",
+  "accessRules": [
+    {
+      "@id": "_:ar0",
+      "executeDate": "2016-05-23",
+      "scope": "global",
+      "publish": true,
+      "basis": {
+        "accessDirection": "http://records.nsw.gov.au/accessDirection/1296",
+        "accessDescription": "Early"
+      },
+      "fullManifest": false,
+      "displayTarget": [
+        "_:v0f0"
+      ],
+      "textTarget": "_:v1f0"
+    }
+  ],
+  "versions": [
+    {
+      "@id": "_:v0",
+      "base": "versions/0",
+      "hasAccessRules": [
+        "_:ar0"
+      ],
+      "files": [
+        {
+          "@id": "_:v0f0",
+          "name": "CONSTITUTION ACT 1902.pdf",
+          "originalName": "ca1902188.pdf",
+          "size": 306174,
+          "fileCreated": "2015-04-20T17:41:48+10:00",
+          "modified": "2015-04-20T17:41:48+10:00",
+          "mime": "application/pdf",
+          "puid": "http://www.nationalarchives.gov.uk/pronom/fmt/19"
+        }
+      ]
+    },
+    {
+      "@id": "_:v1",
+      "base": "versions/1",
+      "derivedFrom": "_:v0",
+      "generatedBy": "log:0",
+      "hasAccessRules": [
+        "_:ar0"
+      ],
+      "files": [
+        {
+          "@id": "_:v1f0",
+          "name": "CONSTITUTION ACT 1902.txt",
+          "originalName": "ca1902188.pdf",
+          "size": 182695,
+          "fileCreated": "2015-04-20T17:41:49+10:00",
+          "modified": "2015-04-20T17:41:49+10:00",
+          "mime": "text/plain",
+          "puid": "http://www.nationalarchives.gov.uk/pronom/x-fmt/111"
+        }
+      ]
+    }
+  ],
+  "@context": {
+    "accessDescription": "http://records.nsw.gov.au/terms/accessDescription",
+    "accessDirection": {
+      "@id": "http://records.nsw.gov.au/terms/accessDirection",
+      "@type": "@id"
+    },
+    "accessRules": {
+      "@id": "http://records.nsw.gov.au/terms/accessRules",
+      "@type": "http://records.nsw.gov.au/terms/AccessRule"
+    },
+    "base": "http://records.nsw.gov.au/terms/base",
+    "basis": {
+      "@id": "http://records.nsw.gov.au/terms/basis",
+      "@type": "http://records.nsw.gov.au/terms/Basis"
+    },
+    "derivedFrom": {
+      "@id": "http://www.w3.org/ns/prov#wasDerivedFrom",
+      "@type": "@id"
+    },
+    "displayTarget": {
+      "@id": "http://records.nsw.gov.au/terms/displayTarget",
+      "@type": "@id"
+    },
+    "executeDate": {
+      "@id": "http://records.nsw.gov.au/terms/executeDate",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "fileCreated": {
+      "@id": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileCreated",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "files": {
+      "@id": "http://www.openarchives.org/ore/0.9/jsonld#aggregates",
+      "@type": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject"
+    },
+    "fullManifest": {
+      "@id": "http://records.nsw.gov.au/terms/fullManifest",
+      "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "generatedBy": {
+      "@id": "http://www.w3.org/ns/prov#wasGeneratedBy",
+      "@type": "@id"
+    },
+    "hasAccessRules": {
+      "@id": "http://records.nsw.gov.au/terms/hasAccessRules",
+      "@type": "@id"
+    },
+    "hash": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hasHash",
+    "hashAlgorithm": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashAlgorithm",
+    "hashValue": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashValue",
+    "mime": {
+      "@id": "http://purl.org/dc/terms/format",
+      "@type": "http://purl.org/dc/terms/FileFormat"
+    },
+    "modified": {
+      "@id": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileLastModified",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "name": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileName",
+    "originalName": "http://id.loc.gov/vocabulary/preservation/hasOriginalName",
+    "previewTarget": {
+      "@id": "http://records.nsw.gov.au/terms/previewTarget",
+      "@type": "@id"
+    },
+    "publish": {
+      "@id": "http://records.nsw.gov.au/terms/publish",
+      "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "puid": {
+      "@id": "http://purl.org/dc/terms/format",
+      "@type": "@id"
+    },
+    "scope": "http://records.nsw.gov.au/terms/scope",
+    "size": {
+      "@id": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileSize",
+      "@type": "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "textTarget": {
+      "@id": "http://records.nsw.gov.au/terms/textTarget",
+      "@type": "@id"
+    },
+    "versions": {
+      "@id": "http://records.nsw.gov.au/terms/versions",
+      "@type": "http://records.nsw.gov.au/terms/Version"
+    }
+  }
+}
