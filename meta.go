@@ -158,6 +158,12 @@ func ToRef(i int, ref string) string {
 	return ref + ":" + strconv.Itoa(i)
 }
 
+// ToSz is a helper function that turns a string int into an int64
+func ToSz(s string) int64 {
+	i, _ := strconv.ParseInt(s, 10, 64)
+	return i
+}
+
 // ReadAll is a helper function that opens a file at path and reads as a CSV.
 // Returns a slice of string slices and an error.
 func ReadAll(path string) ([][]string, error) {
