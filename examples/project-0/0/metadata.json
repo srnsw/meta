@@ -1,0 +1,54 @@
+{
+  "@id": "obj:0",
+  "migration": "mig:0",
+  "@type": [
+    "http://records.nsw.gov.au/terms/DigitalArchive",
+    "http://schema.org/Legislation"
+  ],
+  "title": "State Records Act 1998 No 17",
+  "description": "An Act to make provision for the creation, management and protection of the records of public offices of the State and to provide for public access to those records, to establish the State Archives and Records Authority; and for other purposes.",
+  "created": "1998",
+  "language":"en",
+  "creator": [
+    {
+      "@id": "https://www.records.nsw.gov.au/agency/10",
+      "@type": "http://records.nsw.gov.au/terms/Agency",
+      "name": "Department of Premier and Cabinet"
+    }
+  ],
+  "series": "http://records.nsw.gov.au/series/21404",
+  "consignment": "http://records.nsw.gov.au/consignment/189087",
+  "disposalRule": {
+      "authority": "DA48",
+      "class": "1.1.1.2"
+  },
+  "@context": {
+    "authority": "http://records.nsw.gov.au/terms/disposalAuthority",
+    "class": "http://records.nsw.gov.au/terms/disposalClass",
+    "consignment": {
+      "@id": "http://records.nsw.gov.au/terms/consignment",
+      "@type": "@id"
+    },
+    "created": {
+      "@id": "http://purl.org/dc/terms/created",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "creator": "http://purl.org/dc/terms/creator",
+    "disposalRule": {
+      "@id": "http://records.nsw.gov.au/terms/disposalRule",
+      "@type": "http://records.nsw.gov.au/terms/DisposalRule"
+    },
+    "language": "http://schema.org/inLanguage",
+     "migration": {
+      "@id": "http://records.nsw.gov.au/terms/migration",
+      "@type": "@id"
+    },
+    "name": "http://schema.org/name",
+    "series": {
+      "@id": "http://records.nsw.gov.au/terms/series",
+      "@type": "@id"
+    },
+    "title": "http://purl.org/dc/terms/title",
+    "description": "http://purl.org/dc/terms/description"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "@id": "log:0",
+  "@type": "http://id.loc.gov/vocabulary/preservation/eventType/mig",
+  "startTime": "2015-04-20T17:41:48+10:00",
+  "endTime": "2015-04-20T17:42:00+10:00",
+  "detail": "Manually created CSV using MS Excel 2013",
+  "agent": {
+    "@type": "http://schema.org/Person",
+    "name": "Richard Lehane"
+  },
+  "@context": {
+    "agent": {
+      "@id": "https://www.w3.org/ns/prov#wasAssociatedWith",
+      "@type": "https://www.w3.org/ns/prov#Agent"
+    },
+    "detail": "http://id.loc.gov/vocabulary/preservation/hasNote",
+    "endTime": {
+      "@id": "https://www.w3.org/ns/prov#endedAtTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "name": "http://schema.org/name",
+    "startTime": {
+      "@id": "https://www.w3.org/ns/prov#startedAtTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }
+  }
+}
