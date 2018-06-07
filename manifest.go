@@ -267,7 +267,7 @@ var manifestContext = Context{
 	"hashValue":     "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashValue",
 	"mime": Obj{
 		ID:  "http://purl.org/dc/terms/format",
-		Typ: "http://purl.org/dc/terms/FileFormat",
+		Typ: "http://purl.org/dc/terms/MediaType",
 	},
 	"modified": Obj{
 		ID:  "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileLastModified",

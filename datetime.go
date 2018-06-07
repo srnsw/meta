@@ -43,6 +43,11 @@ func NewDate(d string) *W3CDate {
 	return date
 }
 
+// WrapDate allows you to create a *W3CDate (with YMD precision) when you already have a *time.Time
+func WrapDate(t time.Time) *W3CDate {
+	return &W3CDate{0, t}
+}
+
 // ParseDate makes a W3CDate from a W3C style date string
 func ParseDate(d string) (W3CDate, error) {
 	var (

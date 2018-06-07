@@ -122,7 +122,7 @@
     "hashValue": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashValue",
     "mime": {
       "@id": "http://purl.org/dc/terms/format",
-      "@type": "http://purl.org/dc/terms/FileFormat"
+      "@type": "http://purl.org/dc/terms/MediaType"
     },
     "modified": {
       "@id": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileLastModified",
