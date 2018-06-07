@@ -11,9 +11,7 @@
         "accessDescription": "Early"
       },
       "fullManifest": false,
-      "displayTarget": [
-        "_:v0f0"
-      ],
+      "displayTarget": "_:v0f0",
       "textTarget": "_:v1f0"
     }
   ],
@@ -21,9 +19,6 @@
     {
       "@id": "_:v0",
       "base": "versions/0",
-      "hasAccessRules": [
-        "_:ar0"
-      ],
       "files": [
         {
           "@id": "_:v0f0",
@@ -42,9 +37,6 @@
       "base": "versions/1",
       "derivedFrom": "_:v0",
       "generatedBy": "log:0",
-      "hasAccessRules": [
-        "_:ar0"
-      ],
       "files": [
         {
           "@id": "_:v1f0",
@@ -102,13 +94,6 @@
       "@id": "http://www.w3.org/ns/prov#wasGeneratedBy",
       "@type": "@id"
     },
-    "hasAccessRules": {
-      "@id": "http://records.nsw.gov.au/terms/hasAccessRules",
-      "@type": "@id"
-    },
-    "hash": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hasHash",
-    "hashAlgorithm": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashAlgorithm",
-    "hashValue": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashValue",
     "mime": {
       "@id": "http://purl.org/dc/terms/format",
       "@type": "http://purl.org/dc/terms/FileFormat"
@@ -119,11 +104,7 @@
     },
     "name": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#fileName",
     "originalName": "http://id.loc.gov/vocabulary/preservation/hasOriginalName",
-    "previewTarget": {
-      "@id": "http://records.nsw.gov.au/terms/previewTarget",
-      "@type": "@id"
-    },
-    "publish": {
+       "publish": {
       "@id": "http://records.nsw.gov.au/terms/publish",
       "@type": "http://www.w3.org/2001/XMLSchema#boolean"
     },
