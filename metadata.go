@@ -6,6 +6,7 @@ type Metadata struct {
 	Migration         string   `json:"migration"`
 	Typ               VarStr   `json:"@type"`
 	Title             string   `json:"title"`
+	Description       string   `json:"description,omitempty"`
 	Created           *W3CDate `json:"created,omitempty"`
 	Creator           Agent    `json:"creator,omitempty"`
 	Source            VarStr   `json:"source,omitempty"`
@@ -125,7 +126,7 @@ func ToSeries(i int) string {
 
 // ToConsignment turns a consignment number into an IRI @id
 func ToConsignment(i int) string {
-	return ToID(i, "http://records.nsw.gov.au/consignment/")
+	return ToID(i, "http://records.nsw.gov.au/consignments/")
 }
 
 // MakeBusiness returns a Thing of @type schema.org/Organization and sets the supplied fields.
@@ -168,7 +169,7 @@ func ReferenceMigration(i int) string {
 }
 
 var metadataContext = Context{
-	"abn":              "https://www.wikidata.org/wiki/Q4823913",
+	"abn":              "http://www.wikidata.org/wiki/Q4823913",
 	"about":            "http://schema.org/about",
 	"actor":            "http://schema.org/actor",
 	"authority":        "http://records.nsw.gov.au/terms/disposalAuthority",
@@ -183,8 +184,9 @@ var metadataContext = Context{
 		ID:  "http://purl.org/dc/terms/created",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
-	"creator":  "http://purl.org/dc/terms/creator",
-	"director": "http://schema.org/director",
+	"creator":     "http://purl.org/dc/terms/creator",
+	"description": "http://purl.org/dc/terms/description",
+	"director":    "http://schema.org/director",
 	"disposalRule": Obj{
 		ID:  "http://records.nsw.gov.au/terms/disposalRule",
 		Typ: "http://records.nsw.gov.au/terms/DisposalRule",

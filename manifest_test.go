@@ -93,3 +93,42 @@ func TestManifest(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestManifestConst(t *testing.T) {
+	m := NewManifest()
+	_, err := m.AddAR("2016-05-23", "global", true, 1296, "Early", []FileTarget{{0, 0}}, nil, []FileTarget{{1, 0}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.AccessRules[0].FullManifest = new(bool)
+	m.AddVersion([]File{
+		{
+			Name:         "CONSTITUTION ACT 1902.pdf",
+			OriginalName: "ca1902188.pdf",
+			Size:         306174,
+			Created:      NewDateTime("2015-04-20T17:41:48+10:00"),
+			Modified:     NewDateTime("2015-04-20T17:41:48+10:00"),
+			MIME:         "application/pdf",
+			PUID:         "http://www.nationalarchives.gov.uk/pronom/fmt/19",
+		}})
+	m.AddVersion([]File{
+		{
+			Name:         "CONSTITUTION ACT 1902.txt",
+			OriginalName: "ca1902188.pdf",
+			Size:         182695,
+			Created:      NewDateTime("2015-04-20T17:41:49+10:00"),
+			Modified:     NewDateTime("2015-04-20T17:41:49+10:00"),
+			MIME:         "text/plain",
+			PUID:         "http://www.nationalarchives.gov.uk/pronom/x-fmt/111",
+		}})
+	m.Versions[1].DerivedFrom = ReferenceVersion(0)
+	m.Versions[1].GeneratedBy = ReferenceLog(0)
+	ctx, err := populate(manifestContext, m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.Context = ctx
+	if err = compare(m, filepath.Join("project-0", "0", "manifest.json")); err != nil {
+		t.Fatal(err)
+	}
+}

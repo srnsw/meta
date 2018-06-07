@@ -1,19 +1,34 @@
 package meta
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
-const w3cdtf = "2006-01-02"
+const (
+	w3cymd = "2006-01-02"
+	w3cym  = "2006-01"
+	w3cy   = "2006"
+)
 
 // W3CDate contains a time.Time but marshals to json in form yyyy-mm-dd
 type W3CDate struct {
+	precision int
 	time.Time
 }
 
 // MarshalJSON makes W3CDate a json Marshaller with yyyy-mm-dd output
 func (d W3CDate) MarshalJSON() ([]byte, error) {
-	b := make([]byte, 1, len(w3cdtf)+2)
+	fstr := w3cymd
+	switch d.precision {
+	case 1:
+		fstr = w3cym
+	case 2:
+		fstr = w3cy
+	}
+	b := make([]byte, 1, len(fstr)+2)
 	b[0] = '"'
-	b = d.AppendFormat(b, w3cdtf)
+	b = d.AppendFormat(b, fstr)
 	b = append(b, '"')
 	return b, nil
 }
@@ -22,18 +37,33 @@ func (d W3CDate) MarshalJSON() ([]byte, error) {
 // If the string provided is an invalid date, a nil reference is returned.
 func NewDate(d string) *W3CDate {
 	var date *W3CDate
-	if d != "" {
-		if pd, err := ParseDate(d); err == nil {
-			date = &pd
-		}
+	if pd, err := ParseDate(d); err == nil {
+		date = &pd
 	}
 	return date
 }
 
 // ParseDate makes a W3CDate from a W3C style date string
 func ParseDate(d string) (W3CDate, error) {
-	t, err := time.Parse(w3cdtf, d)
-	return W3CDate{t}, err
+	var (
+		t   time.Time
+		p   int
+		err error
+	)
+	switch len(d) {
+	case len(w3cymd):
+		t, err = time.Parse(w3cymd, d)
+		p = 0
+	case len(w3cym):
+		t, err = time.Parse(w3cym, d)
+		p = 1
+	case len(w3cy):
+		t, err = time.Parse(w3cy, d)
+		p = 2
+	default:
+		err = errors.New("Meta: datetime error, invalid length for provided date " + d)
+	}
+	return W3CDate{p, t}, err
 }
 
 // NewDate returns a reference to a time.Time from a W3C style datetime string.
