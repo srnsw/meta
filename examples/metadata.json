@@ -20,7 +20,7 @@
   ],
   "source": "https://twitter.com/",
   "series": "http://records.nsw.gov.au/series/21404",
-  "consignment": "http://records.nsw.gov.au/consignment/189087",
+  "consignment": "http://records.nsw.gov.au/consignments/189087",
   "disposalRule": {
       "authority": "DA48",
       "class": "1.1.1.2"
@@ -45,7 +45,7 @@
       }
   },
   "@context": {
-    "abn": "https://www.wikidata.org/wiki/Q4823913",
+    "abn": "http://www.wikidata.org/wiki/Q4823913",
     "about": "http://schema.org/about",
     "actor": "http://schema.org/actor",
     "authority": "http://records.nsw.gov.au/terms/disposalAuthority",
