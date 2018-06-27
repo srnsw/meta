@@ -15,7 +15,8 @@ type Log struct {
 }
 
 const (
-	MigrationEvent = "http://id.loc.gov/vocabulary/preservation/eventType/mig"
+	ModificationEvent = "http://id.loc.gov/vocabulary/preservation/eventType/mod"
+	MigrationEvent    = "http://id.loc.gov/vocabulary/preservation/eventType/mig"
 )
 
 // NewLog creates a *Log

@@ -1,7 +1,6 @@
 package meta
 
 import (
-	"encoding/csv"
 	"encoding/json"
 	"io/ioutil"
 	"os"
@@ -136,42 +135,4 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 		}
 	}
 	return nil
-}
-
-// Helpers
-
-// ToID is a helper function that turns an integer identififier into a string @id
-// It is useful for places where we use integer IDs e.g. series numbers but want an IRI for the @id
-func ToID(i int, pat string) string {
-	if i <= 0 {
-		return ""
-	}
-	return pat + strconv.Itoa(i)
-}
-
-// ToRef is a helper function that turns an integer identififier into a string ref:I reference.
-// It is used for placedholder IDs like log:1 that get swapped out by the Migrate tool.
-func ToRef(i int, ref string) string {
-	if i < 0 {
-		return ""
-	}
-	return ref + ":" + strconv.Itoa(i)
-}
-
-// ToSz is a helper function that turns a string int into an int64
-func ToSz(s string) int64 {
-	i, _ := strconv.ParseInt(s, 10, 64)
-	return i
-}
-
-// ReadAll is a helper function that opens a file at path and reads as a CSV.
-// Returns a slice of string slices and an error.
-func ReadAll(path string) ([][]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-	reader := csv.NewReader(file)
-	return reader.ReadAll()
 }
