@@ -40,6 +40,11 @@ func ToSz(s string) int64 {
 	return i
 }
 
+func MustInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
+}
+
 // ReadAll is a helper function that opens a file at path and reads as a CSV.
 // Provide an optional lazy quote bool if you'd like lazy quotes.
 // Returns a slice of string slices and an error.
