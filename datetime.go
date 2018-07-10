@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//Add new date formats here, using the special Golang date value
 const (
 	w3cymd   = "2006-01-02"
 	w3cym    = "2006-01"
