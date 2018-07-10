@@ -10,6 +10,7 @@ type Metadata struct {
 	Created           *W3CDate `json:"created,omitempty"`
 	Creator           Agent    `json:"creator,omitempty"`
 	Source            VarStr   `json:"source,omitempty"`
+	IsPartOf          VarStr   `json:"isPartOf,omitempty"`
 	Series            string   `json:"series,omitempty"`
 	Consignment       string   `json:"consignment,omitempty"`
 	DisposalRule      Disposal `json:"disposalRule,omitempty"`
@@ -94,6 +95,7 @@ var metadataContext = Context{
 		Typ: "http://records.nsw.gov.au/terms/DisposalRule",
 	},
 	"duration":  "http://schema.org/duration",
+	"isPartOf":  "http://purl.org/dc/terms/isPartOf",
 	"language":  "http://schema.org/inLanguage",
 	"legalName": "http://schema.org/legalName",
 	"migration": Obj{

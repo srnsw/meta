@@ -19,6 +19,7 @@
     }
   ],
   "source": "https://twitter.com/",
+  "isPartOf": "Exhibits 50. The trials of Mel Gibson",
   "series": "http://records.nsw.gov.au/series/21404",
   "consignment": "http://records.nsw.gov.au/consignments/189087",
   "disposalRule": {
@@ -67,6 +68,7 @@
       "@type": "http://records.nsw.gov.au/terms/DisposalRule"
     },
     "duration": "http://schema.org/duration",
+    "isPartOf": "http://purl.org/dc/terms/isPartOf",
     "language": "http://schema.org/inLanguage",
     "legalName": "http://schema.org/legalName",
      "migration": {
