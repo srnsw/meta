@@ -10,6 +10,7 @@ const (
 	w3cym    = "2006-01"
 	w3cy     = "2006"
 	slashdmy = "2/01/2006"
+	FBDTF    = "2006-01-02T15:04:05+0700"
 )
 
 // W3CDate contains a time.Time but marshals to json in form yyyy-mm-dd
@@ -40,6 +41,14 @@ func NewDate(d string) *W3CDate {
 	var date *W3CDate
 	if pd, err := ParseDate(d); err == nil {
 		date = &pd
+	}
+	return date
+}
+
+func NewDateFormat(format, d string) *W3CDate {
+	var date *W3CDate
+	if t, err := time.Parse(format, d); err == nil {
+		date = WrapDate(t)
 	}
 	return date
 }
