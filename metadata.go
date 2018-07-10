@@ -8,6 +8,7 @@ type Metadata struct {
 	Title             string   `json:"title"`
 	Description       string   `json:"description,omitempty"`
 	Created           *W3CDate `json:"created,omitempty"`
+	Modified          *W3CDate `json:"modified,omitempty"`
 	Creator           Agent    `json:"creator,omitempty"`
 	Source            VarStr   `json:"source,omitempty"`
 	IsPartOf          VarStr   `json:"isPartOf,omitempty"`
@@ -101,6 +102,10 @@ var metadataContext = Context{
 	"migration": Obj{
 		ID:  "http://records.nsw.gov.au/terms/migration",
 		Typ: "@id",
+	},
+	"modified": Obj{
+		ID:  "http://purl.org/dc/terms/modified",
+		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
 	"name":               "http://schema.org/name",
 	"productionCompany":  "http://schema.org/productionCompany",
