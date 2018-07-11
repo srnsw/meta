@@ -6,10 +6,12 @@ import (
 )
 
 const (
-	w3cymd   = "2006-01-02"
-	w3cym    = "2006-01"
-	w3cy     = "2006"
-	slashdmy = "2/01/2006"
+	w3cymd     = "2006-01-02"
+	w3cym      = "2006-01"
+	w3cy       = "2006"
+	slashdmy   = "2/01/2006"
+	reldtf     = slashdmy + " 15:04" //relativity
+	relnoslash = "20060102"
 )
 
 // W3CDate contains a time.Time but marshals to json in form yyyy-mm-dd
@@ -47,6 +49,22 @@ func NewDate(d string) *W3CDate {
 func NewDateSlash(d string) *W3CDate {
 	var date *W3CDate
 	if t, err := time.Parse(slashdmy, d); err == nil {
+		date = WrapDate(t)
+	}
+	return date
+}
+
+func NewDateRelativity(d string) *W3CDate {
+	var date *W3CDate
+	if t, err := time.Parse(reldtf, d); err == nil {
+		date = WrapDate(t)
+	}
+	return date
+}
+
+func NewDateRelNoSlash(d string) *W3CDate {
+	var date *W3CDate
+	if t, err := time.Parse(relnoslash, d); err == nil {
 		date = WrapDate(t)
 	}
 	return date
