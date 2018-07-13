@@ -1,3 +1,17 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package meta
 
 import (
@@ -9,7 +23,7 @@ const (
 	w3cymd   = "2006-01-02"
 	w3cym    = "2006-01"
 	w3cy     = "2006"
-	slashdmy = "2/01/2006"
+	SlashDMY = "2/01/2006"
 	FBDTF    = "2006-01-02T15:04:05+0700"
 )
 
@@ -45,20 +59,23 @@ func NewDate(d string) *W3CDate {
 	return date
 }
 
-func NewDateFormat(format, d string) *W3CDate {
+// NewDate returns a reference to W3CDate from a time layout string and a
+// date in that layout string.
+// If the string provided is an invalid date, a nil reference is returned.
+func NewDateLayout(layout, d string) *W3CDate {
 	var date *W3CDate
-	if t, err := time.Parse(format, d); err == nil {
+	if t, err := time.Parse(layout, d); err == nil {
 		date = WrapDate(t)
 	}
 	return date
 }
 
-func NewDateSlash(d string) *W3CDate {
-	var date *W3CDate
-	if t, err := time.Parse(slashdmy, d); err == nil {
-		date = WrapDate(t)
-	}
-	return date
+// ParseDateLayout returns a reference to W3CDate from a time layout string and a
+// date in that layout string.
+// If the string provided is an invalid date, an error is returned
+func ParseDateLayout(layout, d string) (*W3CDate, error) {
+	t, err := time.Parse(layout, d)
+	return WrapDate(t), err
 }
 
 // WrapDate allows you to create a *W3CDate (with YMD precision) when you already have a *time.Time

@@ -1,3 +1,22 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//  Package meta:
+//
+//  - defines NSW State Archives approach to the construction of SIPS in the [OAIS model](https://www.oclc.org/research/publications/library/2000/lavoie-oais.html).
+//  - defines schemas for the metadata.json, manifest.json and json log files within these SIPS
+//  - is a software library that can be used by scripts in order to generate these SIPS.
 package meta
 
 import (
