@@ -158,3 +158,27 @@ func ReferenceObject(i int) string {
 func ReferenceMigration(i int) string {
 	return ToRef(i, "mig")
 }
+
+func MakeContainer(title, id, typ string) Container {
+	return Obj{
+		ID:    id,
+		Typ:   typ,
+		Title: title,
+	}
+}
+
+func MarkupSet(title string) Container {
+	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/MarkupSet")
+}
+
+func Exhibit(title string) Container {
+	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/Exhibit")
+}
+
+func Bundle(title string) Container {
+	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/Bundle")
+}
+
+func Email(id string) Container {
+	return MakeContainer("", id, "https://schema.org/EmailMessage")
+}

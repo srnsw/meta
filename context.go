@@ -15,12 +15,13 @@ type Context map[string]Field
 type Field interface{}
 
 // Obj is a json object. Used with @id/@type in @context.
-// Can also be used to generate generic objects e.g. Agents in metadata are Objs.
+// Can also be used to generate generic objects e.g. Agents and containers in metadata are Objs
 type Obj struct {
 	ID        string `json:"@id,omitempty"`
 	Typ       string `json:"@type,omitempty"`
 	Container string `json:"@container,omitempty"`
 	Name      string `json:"name,omitempty"`
+	Title     string `json:"title,omitempty"`
 }
 
 // populate reads v as json and infers the @context necessary to describe this json file.

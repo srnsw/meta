@@ -7,10 +7,13 @@ import (
 
 func TestMetadata(t *testing.T) {
 	m := NewMetadata(0, "Business Name Registration - Duntryleague Country Club")
+	m.AgencyID = "TRAN.001.890"
+	m.Description = "A very nice record"
 	m.AddType("http://schema.org/Movie")
 	m.Created = NewDate("1902-01-01")
 	m.Modified = NewDate("1903-02-02")
 	m.Creator = []Agent{MakeAgency("Office of Fair Trading", 0), MakePerson("Michael Bruce Baird", 288)}
+	m.Provenance = "https://twitter.com/MelGibson"
 	m.Source = "https://twitter.com/"
 	m.IsPartOf = "Exhibits 50. The trials of Mel Gibson"
 	m.Series = ToSeries(21404)
