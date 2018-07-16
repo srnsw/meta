@@ -19,12 +19,14 @@ import (
 	"time"
 )
 
+//Add new date formats here, using the special Golang date value
 const (
-	w3cymd   = "2006-01-02"
-	w3cym    = "2006-01"
-	w3cy     = "2006"
-	SlashDMY = "2/01/2006"
-	FBDTF    = "2006-01-02T15:04:05+0700"
+	w3cymd     = "2006-01-02"
+	w3cym      = "2006-01"
+	w3cy       = "2006"
+	SlashDMY   = "2/01/2006"
+	RelDTF     = SlashDMY + " 15:04" //relativity
+	RelNoSlash = "20060102"
 )
 
 // W3CDate contains a time.Time but marshals to json in form yyyy-mm-dd

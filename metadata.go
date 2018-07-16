@@ -16,27 +16,29 @@ package meta
 
 // Metadata represents a metadata.json file
 type Metadata struct {
-	ID                string   `json:"@id"`
-	Migration         string   `json:"migration"`
-	Typ               VarStr   `json:"@type"`
-	Title             string   `json:"title"`
-	Description       string   `json:"description,omitempty"`
-	Created           *W3CDate `json:"created,omitempty"`
-	Modified          *W3CDate `json:"modified,omitempty"`
-	Creator           Agent    `json:"creator,omitempty"`
-	Source            VarStr   `json:"source,omitempty"`
-	IsPartOf          VarStr   `json:"isPartOf,omitempty"`
-	Series            string   `json:"series,omitempty"`
-	Consignment       string   `json:"consignment,omitempty"`
-	DisposalRule      Disposal `json:"disposalRule,omitempty"`
-	Duration          string   `json:"duration,omitempty"`
-	Language          VarStr   `json:"language,omitempty"`
-	Subtitles         VarStr   `json:"subtitles,omitempty"`
-	Director          VarStr   `json:"director,omitempty"`
-	Actor             VarStr   `json:"actor,omitempty"`
-	ProductionCompany VarStr   `json:"productionCompany,omitempty"`
-	About             Thing    `json:"about,omitempty"`
-	Context           Context  `json:"@context"`
+	ID                string    `json:"@id"`
+	Migration         string    `json:"migration"`
+	Typ               VarStr    `json:"@type"`
+	Title             string    `json:"title"`
+	AgencyID          string    `json:"agencyIdentifier,omitempty"`
+	Description       string    `json:"description,omitempty"`
+	Created           *W3CDate  `json:"created,omitempty"`
+	Modified          *W3CDate  `json:"modified,omitempty"`
+	Creator           Agent     `json:"creator,omitempty"`
+	Provenance        string    `json:"provenance,omitempty"`
+	Source            VarStr    `json:"source,omitempty"`
+	IsPartOf          Container `json:"isPartOf,omitempty"`
+	Series            string    `json:"series,omitempty"`
+	Consignment       string    `json:"consignment,omitempty"`
+	DisposalRule      Disposal  `json:"disposalRule,omitempty"`
+	Duration          string    `json:"duration,omitempty"`
+	Language          VarStr    `json:"language,omitempty"`
+	Subtitles         VarStr    `json:"subtitles,omitempty"`
+	Director          VarStr    `json:"director,omitempty"`
+	Actor             VarStr    `json:"actor,omitempty"`
+	ProductionCompany VarStr    `json:"productionCompany,omitempty"`
+	About             Thing     `json:"about,omitempty"`
+	Context           Context   `json:"@context"`
 }
 
 // Disposal can be a single DisposalRule{} or a slice of []DisposalRule{}
@@ -52,6 +54,9 @@ type Agent interface{}
 
 // Thing can be anything that a metadata is "about"
 type Thing interface{}
+
+// Type container can be anything a metadata isPartOf
+type Container interface{}
 
 // Business is a type of Thing. It is used for the BRS project
 type Business struct {
@@ -90,6 +95,7 @@ var metadataContext = Context{
 	"abn":              "http://www.wikidata.org/wiki/Q4823913",
 	"about":            "http://schema.org/about",
 	"actor":            "http://schema.org/actor",
+	"agencyIdentifier": "http://records.nsw.gov.au/terms/agencyIdentifier",
 	"authority":        "http://records.nsw.gov.au/terms/disposalAuthority",
 	"ceasedTrading":    "http://schema.org/dissolutionDate",
 	"class":            "http://records.nsw.gov.au/terms/disposalClass",
@@ -124,6 +130,7 @@ var metadataContext = Context{
 	"name":               "http://schema.org/name",
 	"productionCompany":  "http://schema.org/productionCompany",
 	"proprietor":         "http://records.nsw.gov.au/terms/proprietor",
+	"provenance":         "http://purl.org/dc/terms/provenance",
 	"registrationNumber": "http://records.nsw.gov.au/terms/registrationNumber",
 	"renewalDueDate": Obj{
 		ID:  "http://records.nsw.gov.au/terms/renewalDueDate",
