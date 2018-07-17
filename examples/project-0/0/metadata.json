@@ -7,7 +7,6 @@
   ],
   "title": "State Records Act 1998 No 17",
   "description": "An Act to make provision for the creation, management and protection of the records of public offices of the State and to provide for public access to those records, to establish the State Archives and Records Authority; and for other purposes.",
-  "created": "1998",
   "creator": [
     {
       "@id": "http://records.nsw.gov.au/agencies/10",
@@ -15,6 +14,7 @@
       "name": "Department of Premier and Cabinet"
     }
   ],
+  "created": "1998",
   "series": "http://records.nsw.gov.au/series/21404",
   "consignment": "http://records.nsw.gov.au/consignments/189087",
   "disposalRule": {

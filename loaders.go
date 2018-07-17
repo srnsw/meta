@@ -14,8 +14,141 @@
 
 package meta
 
-// Siegfried loader
+import (
+	"fmt"
+	"io"
+	"path/filepath"
+	"strings"
 
-// GlobalAccessRule loader
+	"github.com/richardlehane/siegfried/pkg/pronom"
+	"github.com/richardlehane/siegfried/pkg/reader"
+)
 
-// GlobalDisposalRule loader
+// Siegfried loader. Reads a siegfried file (or droid or fido) to generate generic digital objects
+type Siegfried struct {
+	Blacklist []string
+	reader.Reader
+}
+
+// NewSiegfried takes an io Reader for a siegfried/droid/fido results file and an optional blacklist.
+// The blacklist is IDs you'd like to exclude e.g. to prune thumbs db files
+func NewSiegfried(rdr io.Reader, blacklist ...string) (*Siegfried, error) {
+	srdr, err := reader.New(rdr, "")
+	return &Siegfried{blacklist, srdr}, err
+}
+
+func (s *Siegfried) Load(m *Meta) error {
+	var (
+		f   reader.File
+		err error
+	)
+	for f, err = s.Next(); err == nil; f, err = s.Next() {
+		// first check that we just have a single, PRONOM ID
+		if len(f.IDs) != 1 {
+			return fmt.Errorf("meta: siegfried loader can only process single IDs, have %d IDs for file %s", len(f.IDs), f.Path)
+		}
+		pid, ok := f.IDs[0].(pronom.Identification)
+		if !ok {
+			return fmt.Errorf("meta: siegfried loader can only process PRONOM IDs, have %T", f.IDs[0])
+		}
+		// now check the blacklist
+		var isBlackListed bool
+		for _, black := range s.Blacklist {
+			if black == pid.String() {
+				isBlackListed = true
+				break
+			}
+		}
+		if isBlackListed {
+			continue
+		}
+		fname := filepath.Base(f.Path)
+		met, man := NewMetadata(len(m.Index), strings.TrimSuffix(fname, filepath.Ext(fname))), NewManifest()
+		modT := NewDateTime(f.Mod)
+		met.Created = WrapDate(*modT)
+		var hash *Hash
+		if s.Head().HashHeader != "" {
+			hash = &Hash{
+				Algorithm: s.Head().HashHeader,
+				Value:     string(f.Hash),
+			}
+		}
+		man.AddVersion([]File{{
+			Name:     fname,
+			Size:     f.Size,
+			Modified: modT,
+			MIME:     pid.MIME,
+			PUID:     "http://www.nationalarchives.gov.uk/pronom/" + pid.String(),
+			Hash:     hash,
+		}})
+		m.Index = append(m.Index, f.Path)
+		m.Metadata[f.Path] = met
+		m.Manifest[f.Path] = man
+	}
+	if err == io.EOF {
+		err = nil
+	}
+	return err
+}
+
+// GlobalAccess loader. Applies a simple, global access rule to all digital objects
+type GlobalAccess struct {
+	AccessDir    int
+	AccessEffect string
+	Execute      string
+}
+
+func (g GlobalAccess) Load(m *Meta) error {
+	for _, k := range m.Index {
+		m.Manifest[k].AddAR(g.Execute,
+			"global",
+			true,
+			g.AccessDir,
+			g.AccessEffect,
+			[]FileTarget{{}},
+			nil,
+			nil)
+	}
+	return nil
+}
+
+// DisposalRule loader. Applies a single disposal rule to all digital objects
+func (d DisposalRule) Load(m *Meta) error {
+	for _, k := range m.Index {
+		m.Metadata[k].DisposalRule = d
+	}
+	return nil
+}
+
+// Series loader. Applies a single series to all digital objects
+type Series int
+
+func (s Series) Load(m *Meta) error {
+	for _, k := range m.Index {
+		m.Metadata[k].Series = ToSeries(int(s))
+	}
+	return nil
+}
+
+// Agency loader. Applies a single agency creator to all digital objects
+type Agency struct {
+	Name string
+	ID   int
+}
+
+func (a Agency) Load(m *Meta) error {
+	for _, k := range m.Index {
+		m.Metadata[k].Creator = MakeAgency(a.Name, a.ID)
+	}
+	return nil
+}
+
+// Title func loader. Allows you to customise a title based on other metadata (e.g. manipulate the file name to make a title)
+type TitleFn func(m *Meta, index string) string
+
+func (t TitleFn) Load(m *Meta) error {
+	for _, k := range m.Index {
+		m.Metadata[k].Title = t(m, k)
+	}
+	return nil
+}

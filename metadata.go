@@ -20,11 +20,11 @@ type Metadata struct {
 	Migration         string    `json:"migration"`
 	Typ               VarStr    `json:"@type"`
 	Title             string    `json:"title"`
-	AgencyID          string    `json:"agencyIdentifier,omitempty"`
 	Description       string    `json:"description,omitempty"`
+	Creator           Agent     `json:"creator,omitempty"`
 	Created           *W3CDate  `json:"created,omitempty"`
 	Modified          *W3CDate  `json:"modified,omitempty"`
-	Creator           Agent     `json:"creator,omitempty"`
+	AgencyID          string    `json:"agencyIdentifier,omitempty"` // original @id used within agency e.g. TRANS.01.01
 	Provenance        string    `json:"provenance,omitempty"`
 	Source            VarStr    `json:"source,omitempty"`
 	IsPartOf          Container `json:"isPartOf,omitempty"`

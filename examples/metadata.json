@@ -6,10 +6,7 @@
     "http://schema.org/Movie"
   ],
   "title": "Business Name Registration - Duntryleague Country Club",
-  "agencyIdentifier": "TRAN.001.890",
   "description": "A very nice record",
-  "created": "1902-01-01",
-  "modified": "1903-02-02",
   "creator": [
     {
       "@type": "http://records.nsw.gov.au/terms/Agency",
@@ -21,6 +18,9 @@
       "name": "Michael Bruce Baird"
     }
   ],
+  "created": "1902-01-01",
+  "modified": "1903-02-02",
+  "agencyIdentifier": "TRAN.001.890",
   "provenance": "https://twitter.com/MelGibson",
   "source": "https://twitter.com/",
   "isPartOf": "Exhibits 50. The trials of Mel Gibson",
