@@ -24,30 +24,33 @@ import (
 
 // ManifestCopy copies files and versions as listed in the manifest
 // Supply a pathfunc takes the Meta and index as parameters. The output of the pathfunc will be joined with the filename as listed in manifest.
-func ManifestCopy(pathfunc func(m *meta.Meta, index string) string) Action {
-	return func(m *meta.Meta, target, index string) error {}
-	man := m.Manifest[index]
-	for vidx, v := range man.Versions {
-		for _, f := range v.Files {
-			if err := wincommands.FileCopy(
-				filepath.Join(pathfunc(m, index), f.Name),
-				filepath.Join(target, "versions", strconv.Itoa(vidx))+string(filepath.Separator),
-				false); err != nil {
-				return err
+func ManifestCopy(pathfunc func(m *Meta, index string) string) Action {
+	return func(m *Meta, target, index string) error {
+		man := m.Manifest[index]
+		for vidx, v := range man.Versions {
+			for _, f := range v.Files {
+				if err := wincommands.FileCopy(
+					filepath.Join(pathfunc(m, index), f.Name),
+					filepath.Join(target, "versions", strconv.Itoa(vidx))+string(filepath.Separator),
+					false); err != nil {
+					return err
+				}
 			}
 		}
+		return nil
 	}
 }
 
 // Progress prints progress message every n'th item processed
 func Progress(i int) Action {
 	var n, j int
-	return func(m *meta.Meta, target, index string) error {
+	return func(m *Meta, target, index string) error {
 		n++
 		j++
 		if j == i {
 			j = 0
 			log.Printf("Processing number %d (%s)\n", n, index)
 		}
+		return nil
 	}
 }
