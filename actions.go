@@ -41,6 +41,12 @@ func ManifestCopy(pathfunc func(m *Meta, index string) string) Action {
 	}
 }
 
+// IndexPath is an example function that could be supplied to ManifestCopy
+// IndexPath assumes that the index holds the full path to a file, so takes the dir of that path.
+func IndexPath(m *Meta, index string) string {
+	return filepath.Dir(index)
+}
+
 // Progress prints progress message every n'th item processed
 func Progress(i int) Action {
 	var n, j int

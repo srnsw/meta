@@ -20,7 +20,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/richardlehane/siegfried/pkg/pronom"
 	"github.com/richardlehane/siegfried/pkg/reader"
 )
 
@@ -42,19 +41,26 @@ func (s *Siegfried) Load(m *Meta) error {
 		f   reader.File
 		err error
 	)
+	// first check that we just have a single indentifier
+	if len(s.Head().Identifiers) != 1 {
+		return fmt.Errorf("meta: siegfried loader can only process single IDs, have %d IDs for file %s", len(f.IDs), f.Path)
+	}
+	mimeField := -1
+	for i, v := range s.Head().Fields[0] {
+		if v == "mime" || v == "MIME" {
+			mimeField = i
+			break
+		}
+	}
+	if mimeField < 0 {
+		return fmt.Errorf("meta: siegfried loader expects a single identifier that has a MIME field")
+	}
 	for f, err = s.Next(); err == nil; f, err = s.Next() {
-		// first check that we just have a single, PRONOM ID
-		if len(f.IDs) != 1 {
-			return fmt.Errorf("meta: siegfried loader can only process single IDs, have %d IDs for file %s", len(f.IDs), f.Path)
-		}
-		pid, ok := f.IDs[0].(pronom.Identification)
-		if !ok {
-			return fmt.Errorf("meta: siegfried loader can only process PRONOM IDs, have %T", f.IDs[0])
-		}
-		// now check the blacklist
+		id := f.IDs[0]
+		// check the blacklist
 		var isBlackListed bool
 		for _, black := range s.Blacklist {
-			if black == pid.String() {
+			if black == id.String() {
 				isBlackListed = true
 				break
 			}
@@ -77,8 +83,8 @@ func (s *Siegfried) Load(m *Meta) error {
 			Name:     fname,
 			Size:     f.Size,
 			Modified: modT,
-			MIME:     pid.MIME,
-			PUID:     "http://www.nationalarchives.gov.uk/pronom/" + pid.String(),
+			MIME:     id.Values()[mimeField],
+			PUID:     "http://www.nationalarchives.gov.uk/pronom/" + id.String(),
 			Hash:     hash,
 		}})
 		m.Index = append(m.Index, f.Path)
