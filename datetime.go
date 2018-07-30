@@ -25,6 +25,7 @@ const (
 	w3cym      = "2006-01"
 	w3cy       = "2006"
 	SlashDMY   = "2/01/2006"
+	SlashYMD   = "2006/01/02"
 	DashDMY    = "02-01-06"
 	RelDTF     = SlashDMY + " 15:04" //relativity
 	RelNoSlash = "20060102"
