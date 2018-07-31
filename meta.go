@@ -20,12 +20,23 @@
 package meta
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
 )
+
+// marshal marshals JSON as bytes, setting and indent and turning HTML escaping off
+func marshal(v interface{}) ([]byte, error) {
+	buf := &bytes.Buffer{}
+	enc := json.NewEncoder(buf)
+	enc.SetIndent("", "  ")
+	enc.SetEscapeHTML(false)
+	err := enc.Encode(v)
+	return buf.Bytes(), err
+}
 
 // Meta is a set of metadata (metadata.json and manifest.json)
 // The Index field provides ordering.
@@ -108,7 +119,7 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 			return err
 		}
 		meta.Context = ctx
-		j, err := json.MarshalIndent(meta, "", "  ")
+		j, err := marshal(meta)
 		if err != nil {
 			return err
 		}
@@ -121,7 +132,7 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 			return err
 		}
 		man.Context = ctx
-		j, err = json.MarshalIndent(man, "", "  ")
+		j, err = marshal(man)
 		if err != nil {
 			return err
 		}
@@ -144,7 +155,7 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 				return err
 			}
 			log.Context = ctx
-			j, err = json.MarshalIndent(log, "", "  ")
+			j, err = marshal(log)
 			if err != nil {
 				return err
 			}
