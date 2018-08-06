@@ -42,6 +42,7 @@ func marshal(v interface{}) ([]byte, error) {
 // The Index field provides ordering.
 // The Store field can be used to store arbitrary data needed for particular projects.
 type Meta struct {
+	SampleSz int // sample size (-1 if doing a full run)
 	Index    []string
 	Metadata map[string]*Metadata
 	Manifest map[string]*Manifest
@@ -63,6 +64,7 @@ type Action func(meta *Meta, target, index string) error
 // New creates a new meta from the supplied loaders
 func New(loaders ...Loader) (*Meta, error) {
 	m := &Meta{
+		-1,
 		make([]string, 0, Cap),
 		make(map[string]*Metadata),
 		make(map[string]*Manifest),
@@ -89,6 +91,7 @@ func (m *Meta) Output(target string, actions ...Action) error {
 // If a negative index is provided then the index will be calculated from the end. I.e. -10 will return the final 10.
 // Target is the target output directory.
 func (m *Meta) Sample(index, sample int, target string, actions ...Action) error {
+	m.SampleSz = sample
 	if index < 0 && index > 0-len(m.Index) {
 		index = len(m.Index) + index
 	}
