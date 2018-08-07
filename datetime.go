@@ -37,6 +37,18 @@ type W3CDate struct {
 	time.Time
 }
 
+// String writes date with a yyyy-mm-dd output, depeding on precision
+func (d W3CDate) String() string {
+	fstr := w3cymd
+	switch d.precision {
+	case 1:
+		fstr = w3cym
+	case 2:
+		fstr = w3cy
+	}
+	return d.Format(fstr)
+}
+
 // MarshalJSON makes W3CDate a json Marshaller with yyyy-mm-dd output
 func (d W3CDate) MarshalJSON() ([]byte, error) {
 	fstr := w3cymd
