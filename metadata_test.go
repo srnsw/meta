@@ -69,3 +69,16 @@ func TestMetadataConst(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestAppendAgent(t *testing.T) {
+	agents := AppendAgent(nil, MakeSDOPerson("Richard Lehane"))
+	agents = AppendAgent(agents, MakeOrganization("The ANZ Bank"))
+	agents = AppendAgent(agents, MakeSDOPerson("Prince Richard"))
+	if slc, ok := agents.([]Agent); !ok {
+		t.Fatalf("Expecting a slice of agents, got %t", agents)
+	} else {
+		if len(slc) != 3 {
+			t.Fatalf("Expecting 3 agents, got %d", len(slc))
+		}
+	}
+}

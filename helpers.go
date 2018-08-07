@@ -104,6 +104,17 @@ func MakeAgent(name, id, typ string) Agent {
 	}
 }
 
+// AppendAgent is a helper func to add agents to a slice of agents
+func AppendAgent(a, b Agent) Agent {
+	if a == nil {
+		return b
+	}
+	if agents, ok := a.([]Agent); ok {
+		return append(agents, b)
+	}
+	return []Agent{a, b}
+}
+
 // MakeSDOPerson creates an Agent that is of @type schema.org/Person. Does not set an @id.
 func MakeSDOPerson(name string) Agent {
 	return MakeAgent(name, "", "http://schema.org/Person")
