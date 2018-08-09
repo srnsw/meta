@@ -16,8 +16,10 @@ package meta
 
 import (
 	"log"
+	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/srnsw/wincommands"
 )
@@ -36,6 +38,60 @@ func ManifestCopy(pathfunc func(m *Meta, index string) string) Action {
 					return err
 				}
 			}
+		}
+		return nil
+	}
+}
+
+// SimpleManifest observes the files in the "versions" folder and builds a simple manifest based on that information.
+// It takes a fmtmap argument. This map links file extensions e.g. "pdf" to PUID + mimetype.
+func SimpleManifest(fmtmap map[string][2]string) Action {
+	return func(m *Meta, target, index string) error {
+		man, ok := m.Manifest[index]
+		if !ok {
+			man = NewManifest()
+			m.Manifest[index] = man
+		}
+		for i := 0; ; i++ {
+			_, err := os.Stat(filepath.Join(target, "versions", strconv.Itoa(i)))
+			if err != nil {
+				if os.IsNotExist(err) {
+					return nil
+				}
+				return err
+			}
+			files := make([]File, 0, 10)
+			err = filepath.Walk(filepath.Join(target, "versions", strconv.Itoa(i)), func(path string, info os.FileInfo, err error) error {
+				if info.IsDir() || !info.Mode().IsRegular() {
+					return nil
+				}
+				fnames := filepath.SplitList(info.Name())
+				idx := -1
+				for ii, vv := range fnames {
+					if vv == "versions" {
+						idx = ii
+						break
+					}
+				}
+				fname := info.Name()
+				if idx >= 0 && idx+2 < len(fnames) {
+					fname = filepath.Join(fnames[idx+2:]...)
+				}
+				fmt := fmtmap[strings.TrimPrefix(filepath.Ext(fname), ".")]
+				t := info.ModTime()
+				files = append(files, File{
+					Name:     fname,
+					Size:     info.Size(),
+					Modified: &t,
+					MIME:     fmt[1],
+					PUID:     fmt[0],
+				})
+				return nil
+			})
+			if err != nil {
+				return err
+			}
+			man.AddVersion(files)
 		}
 		return nil
 	}
