@@ -42,12 +42,13 @@ func marshal(v interface{}) ([]byte, error) {
 // The Index field provides ordering.
 // The Store field can be used to store arbitrary data needed for particular projects.
 type Meta struct {
-	SampleSz int // sample size (-1 if doing a full run)
-	Index    []string
-	Metadata map[string]*Metadata
-	Manifest map[string]*Manifest
-	Logs     map[string][]*Log
-	Store    map[string]interface{}
+	SampleOff int
+	SampleSz  int // sample size (-1 if doing a full run)
+	Index     []string
+	Metadata  map[string]*Metadata
+	Manifest  map[string]*Manifest
+	Logs      map[string][]*Log
+	Store     map[string]interface{}
 }
 
 // Cap defines the capacity of the index slice. Edit for large jobs to an approximate number of objects
@@ -63,8 +64,16 @@ type Action func(meta *Meta, target, index string) error
 
 // New creates a new meta from the supplied loaders
 func New(loaders ...Loader) (*Meta, error) {
+	return NewSample(0, -1, loaders...)
+}
+
+// New Sample creates a new meta from the supplied loaders.
+// For testing provide an offset where you'd like the sample to start e.g. 50 and a sample size e.g. 10.
+// If a negative offset is provided then the offset will be calculated from the end. I.e. -10 will return the final 10.
+func NewSample(offset, sample int, loaders ...Loader) (*Meta, error) {
 	m := &Meta{
-		-1,
+		offset,
+		sample,
 		make([]string, 0, Cap),
 		make(map[string]*Metadata),
 		make(map[string]*Manifest),
@@ -82,18 +91,9 @@ func New(loaders ...Loader) (*Meta, error) {
 // Arbitrary actions based on that data can also be called by this function.
 // Target is the target output directory.
 func (m *Meta) Output(target string, actions ...Action) error {
-	return m.Sample(0, -1, target, actions...)
-}
-
-// Sample generates metadata.json and manifest.json files for a sample of a Meta's metadata.
-// Arbitrary actions based on that data can also be called by this function.
-// For testing provide a sample size e.g. 10 and an index where you'd like the sample to start.
-// If a negative index is provided then the index will be calculated from the end. I.e. -10 will return the final 10.
-// Target is the target output directory.
-func (m *Meta) Sample(index, sample int, target string, actions ...Action) error {
-	m.SampleSz = sample
-	if index < 0 && index > 0-len(m.Index) {
-		index = len(m.Index) + index
+	index, sample := m.SampleOff, m.SampleSz
+	if m.SampleOff < 0 && m.SampleOff > 0-len(m.Index) {
+		index = len(m.Index) + m.SampleOff
 	}
 	for i, v := range m.Index {
 		if i < index {
