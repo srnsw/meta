@@ -21,6 +21,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/richardlehane/siegfried"
+	"github.com/richardlehane/siegfried/pkg/pronom"
 	"github.com/srnsw/wincommands"
 )
 
@@ -43,9 +45,28 @@ func ManifestCopy(pathfunc func(m *Meta, index string) string) Action {
 	}
 }
 
+// IndexPath is an example function that could be supplied to ManifestCopy
+// IndexPath assumes that the index holds the full path to a file, so takes the dir of that path.
+func IndexPath(m *Meta, index string) string {
+	return filepath.Dir(index)
+}
+
 // SimpleManifest observes the files in the "versions" folder and builds a simple manifest based on that information.
-// It takes a fmtmap argument. This map links file extensions e.g. "pdf" to PUID + mimetype.
-func SimpleManifest(fmtmap map[string][2]string) Action {
+// It takes a fmtmap argument and path to a siegfried file.
+// The fmtmap links file extensions e.g. "pdf" to PUID + mimetype. It can be nil if you want siegfried identification only.
+// The siegfried path can be an empty string if you don't want siegfried scanning.
+func SimpleManifest(fmtmap map[string][2]string, sfpath string) Action {
+	var s *siegfried.Siegfried
+	var err error
+	if sfpath != "" {
+		s, err = siegfried.Load(sfpath)
+		if err != nil {
+			panic(err)
+		}
+	}
+	if fmtmap == nil {
+		fmtmap = make(map[string][2]string)
+	}
 	return func(m *Meta, target, index string) error {
 		man, ok := m.Manifest[index]
 		if !ok {
@@ -77,7 +98,20 @@ func SimpleManifest(fmtmap map[string][2]string) Action {
 				if idx >= 0 && idx+2 < len(fnames) {
 					fname = filepath.Join(fnames[idx+2:]...)
 				}
-				fmt := fmtmap[strings.TrimPrefix(filepath.Ext(fname), ".")]
+				fmt := [2]string{"UNKNOWN", ""}
+				var ok bool
+				fmt, ok = fmtmap[strings.TrimPrefix(filepath.Ext(fname), ".")]
+				if !ok && s != nil {
+					f, err := os.Open(path)
+					if err == nil {
+						ids, _ := s.Identify(f, path, "")
+						if len(ids) == 1 {
+							fmt[0] = ids[0].String()
+							fmt[1] = ids[0].(pronom.Identification).MIME
+						}
+					}
+
+				}
 				t := info.ModTime()
 				files = append(files, File{
 					Name:     fname,
@@ -95,12 +129,6 @@ func SimpleManifest(fmtmap map[string][2]string) Action {
 		}
 		return nil
 	}
-}
-
-// IndexPath is an example function that could be supplied to ManifestCopy
-// IndexPath assumes that the index holds the full path to a file, so takes the dir of that path.
-func IndexPath(m *Meta, index string) string {
-	return filepath.Dir(index)
 }
 
 // Progress prints progress message every n'th item processed
