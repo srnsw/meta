@@ -110,7 +110,7 @@ func SimpleManifest(fmtmap map[string][2]string, sfpath string) Action {
 							fmt[1] = ids[0].(pronom.Identification).MIME
 						}
 					}
-
+					f.Close()
 				}
 				t := info.ModTime()
 				files = append(files, File{
