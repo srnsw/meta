@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/richardlehane/siegfried"
 	"github.com/richardlehane/siegfried/pkg/pronom"
@@ -112,13 +113,13 @@ func SimpleManifest(fmtmap map[string][2]string, sfpath string) Action {
 					}
 					f.Close()
 				}
-				t := info.ModTime()
+				t := info.ModTime().Truncate(time.Second)
 				files = append(files, File{
 					Name:     fname,
 					Size:     info.Size(),
 					Modified: &t,
 					MIME:     fmt[1],
-					PUID:     fmt[0],
+					PUID:     ToPUID(fmt[0]),
 				})
 				return nil
 			})
