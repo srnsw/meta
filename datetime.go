@@ -11,7 +11,7 @@ const (
 	w3cym    = "2006-01"
 	w3cy     = "2006"
 	slashdmy = "2/01/2006"
-	FBDTF    = "2006-01-02T15:04:05+0700"
+	FBDTF    = "2006-01-02T15:04:05+0000"
 )
 
 // W3CDate contains a time.Time but marshals to json in form yyyy-mm-dd
