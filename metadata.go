@@ -1,28 +1,44 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package meta
 
 // Metadata represents a metadata.json file
 type Metadata struct {
-	ID                string   `json:"@id"`
-	Migration         string   `json:"migration"`
-	Typ               VarStr   `json:"@type"`
-	Title             string   `json:"title"`
-	Description       string   `json:"description,omitempty"`
-	Created           *W3CDate `json:"created,omitempty"`
-	Modified          *W3CDate `json:"modified,omitempty"`
-	Creator           Agent    `json:"creator,omitempty"`
-	Source            VarStr   `json:"source,omitempty"`
-	IsPartOf          VarStr   `json:"isPartOf,omitempty"`
-	Series            string   `json:"series,omitempty"`
-	Consignment       string   `json:"consignment,omitempty"`
-	DisposalRule      Disposal `json:"disposalRule,omitempty"`
-	Duration          string   `json:"duration,omitempty"`
-	Language          VarStr   `json:"language,omitempty"`
-	Subtitles         VarStr   `json:"subtitles,omitempty"`
-	Director          VarStr   `json:"director,omitempty"`
-	Actor             VarStr   `json:"actor,omitempty"`
-	ProductionCompany VarStr   `json:"productionCompany,omitempty"`
-	About             Thing    `json:"about,omitempty"`
-	Context           Context  `json:"@context"`
+	ID                string    `json:"@id"`
+	Migration         string    `json:"migration"`
+	Typ               VarStr    `json:"@type"`
+	Title             string    `json:"title"`
+	Description       string    `json:"description,omitempty"`
+	Creator           Agent     `json:"creator,omitempty"`
+	Created           *W3CDate  `json:"created,omitempty"`
+	Modified          *W3CDate  `json:"modified,omitempty"`
+	AgencyID          string    `json:"agencyIdentifier,omitempty"` // original @id used within agency e.g. TRANS.01.01
+	Provenance        string    `json:"provenance,omitempty"`
+	Source            VarStr    `json:"source,omitempty"`
+	IsPartOf          Container `json:"isPartOf,omitempty"`
+	Series            string    `json:"series,omitempty"`
+	Consignment       string    `json:"consignment,omitempty"`
+	DisposalRule      Disposal  `json:"disposalRule,omitempty"`
+	Duration          string    `json:"duration,omitempty"`
+	Language          VarStr    `json:"language,omitempty"`
+	Subtitles         VarStr    `json:"subtitles,omitempty"`
+	Director          VarStr    `json:"director,omitempty"`
+	Actor             VarStr    `json:"actor,omitempty"`
+	ProductionCompany VarStr    `json:"productionCompany,omitempty"`
+	About             Thing     `json:"about,omitempty"`
+	Context           Context   `json:"@context"`
 }
 
 // Disposal can be a single DisposalRule{} or a slice of []DisposalRule{}
@@ -38,6 +54,9 @@ type Agent interface{}
 
 // Thing can be anything that a metadata is "about"
 type Thing interface{}
+
+// Type container can be anything a metadata isPartOf
+type Container interface{}
 
 // Business is a type of Thing. It is used for the BRS project
 type Business struct {
@@ -76,6 +95,7 @@ var metadataContext = Context{
 	"abn":              "http://www.wikidata.org/wiki/Q4823913",
 	"about":            "http://schema.org/about",
 	"actor":            "http://schema.org/actor",
+	"agencyIdentifier": "http://records.nsw.gov.au/terms/agencyIdentifier",
 	"authority":        "http://records.nsw.gov.au/terms/disposalAuthority",
 	"ceasedTrading":    "http://schema.org/dissolutionDate",
 	"class":            "http://records.nsw.gov.au/terms/disposalClass",
@@ -110,6 +130,7 @@ var metadataContext = Context{
 	"name":               "http://schema.org/name",
 	"productionCompany":  "http://schema.org/productionCompany",
 	"proprietor":         "http://records.nsw.gov.au/terms/proprietor",
+	"provenance":         "http://purl.org/dc/terms/provenance",
 	"registrationNumber": "http://records.nsw.gov.au/terms/registrationNumber",
 	"renewalDueDate": Obj{
 		ID:  "http://records.nsw.gov.au/terms/renewalDueDate",

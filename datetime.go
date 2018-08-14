@@ -1,3 +1,17 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package meta
 
 import (
@@ -7,17 +21,33 @@ import (
 
 //Add new date formats here, using the special Golang date value
 const (
-	w3cymd   = "2006-01-02"
-	w3cym    = "2006-01"
-	w3cy     = "2006"
-	slashdmy = "2/01/2006"
-	FBDTF    = "2006-01-02T15:04:05+0000"
+	w3cymd     = "2006-01-02"
+	w3cym      = "2006-01"
+	w3cy       = "2006"
+	FBDTF      = "2006-01-02T15:04:05+0000"
+	SlashDMY   = "2/01/2006"
+	SlashYMD   = "2006/01/02"
+	DashDMY    = "02-01-06"
+	RelDTF     = SlashDMY + " 15:04" //relativity
+	RelNoSlash = "20060102"
 )
 
 // W3CDate contains a time.Time but marshals to json in form yyyy-mm-dd
 type W3CDate struct {
 	precision int
 	time.Time
+}
+
+// String writes date with a yyyy-mm-dd output, depeding on precision
+func (d W3CDate) String() string {
+	fstr := w3cymd
+	switch d.precision {
+	case 1:
+		fstr = w3cym
+	case 2:
+		fstr = w3cy
+	}
+	return d.Format(fstr)
 }
 
 // MarshalJSON makes W3CDate a json Marshaller with yyyy-mm-dd output
@@ -46,20 +76,23 @@ func NewDate(d string) *W3CDate {
 	return date
 }
 
-func NewDateFormat(format, d string) *W3CDate {
+// NewDate returns a reference to W3CDate from a time layout string and a
+// date in that layout string.
+// If the string provided is an invalid date, a nil reference is returned.
+func NewDateLayout(layout, d string) *W3CDate {
 	var date *W3CDate
-	if t, err := time.Parse(format, d); err == nil {
+	if t, err := time.Parse(layout, d); err == nil {
 		date = WrapDate(t)
 	}
 	return date
 }
 
-func NewDateSlash(d string) *W3CDate {
-	var date *W3CDate
-	if t, err := time.Parse(slashdmy, d); err == nil {
-		date = WrapDate(t)
-	}
-	return date
+// ParseDateLayout returns a reference to W3CDate from a time layout string and a
+// date in that layout string.
+// If the string provided is an invalid date, an error is returned
+func ParseDateLayout(layout, d string) (*W3CDate, error) {
+	t, err := time.Parse(layout, d)
+	return WrapDate(t), err
 }
 
 // WrapDate allows you to create a *W3CDate (with YMD precision) when you already have a *time.Time

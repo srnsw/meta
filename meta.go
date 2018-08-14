@@ -1,6 +1,26 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//  Package meta:
+//
+//  - defines NSW State Archives approach to the construction of SIPS in the [OAIS model](https://www.oclc.org/research/publications/library/2000/lavoie-oais.html).
+//  - defines schemas for the metadata.json, manifest.json and json log files within these SIPS
+//  - is a software library that can be used by scripts in order to generate these SIPS.
 package meta
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"os"
@@ -8,15 +28,27 @@ import (
 	"strconv"
 )
 
+// marshal marshals JSON as bytes, setting and indent and turning HTML escaping off
+func marshal(v interface{}) ([]byte, error) {
+	buf := &bytes.Buffer{}
+	enc := json.NewEncoder(buf)
+	enc.SetIndent("", "  ")
+	enc.SetEscapeHTML(false)
+	err := enc.Encode(v)
+	return buf.Bytes(), err
+}
+
 // Meta is a set of metadata (metadata.json and manifest.json)
 // The Index field provides ordering.
 // The Store field can be used to store arbitrary data needed for particular projects.
 type Meta struct {
-	Index    []string
-	Metadata map[string]*Metadata
-	Manifest map[string]*Manifest
-	Logs     map[string][]*Log
-	Store    map[string]interface{}
+	SampleOff int
+	SampleSz  int // sample size (-1 if doing a full run)
+	Index     []string
+	Metadata  map[string]*Metadata
+	Manifest  map[string]*Manifest
+	Logs      map[string][]*Log
+	Store     map[string]interface{}
 }
 
 // Cap defines the capacity of the index slice. Edit for large jobs to an approximate number of objects
@@ -32,7 +64,16 @@ type Action func(meta *Meta, target, index string) error
 
 // New creates a new meta from the supplied loaders
 func New(loaders ...Loader) (*Meta, error) {
+	return NewSample(0, -1, loaders...)
+}
+
+// New Sample creates a new meta from the supplied loaders.
+// For testing provide an offset where you'd like the sample to start e.g. 50 and a sample size e.g. 10.
+// If a negative offset is provided then the offset will be calculated from the end. I.e. -10 will return the final 10.
+func NewSample(offset, sample int, loaders ...Loader) (*Meta, error) {
 	m := &Meta{
+		offset,
+		sample,
 		make([]string, 0, Cap),
 		make(map[string]*Metadata),
 		make(map[string]*Manifest),
@@ -50,17 +91,9 @@ func New(loaders ...Loader) (*Meta, error) {
 // Arbitrary actions based on that data can also be called by this function.
 // Target is the target output directory.
 func (m *Meta) Output(target string, actions ...Action) error {
-	return m.Sample(0, -1, target, actions...)
-}
-
-// Sample generates metadata.json and manifest.json files for a sample of a Meta's metadata.
-// Arbitrary actions based on that data can also be called by this function.
-// For testing provide a sample size e.g. 10 and an index where you'd like the sample to start.
-// If a negative index is provided then the index will be calculated from the end. I.e. -10 will return the final 10.
-// Target is the target output directory.
-func (m *Meta) Sample(index, sample int, target string, actions ...Action) error {
-	if index < 0 && index > 0-len(m.Index) {
-		index = len(m.Index) + index
+	index, sample := m.SampleOff, m.SampleSz
+	if m.SampleOff < 0 && m.SampleOff > 0-len(m.Index) {
+		index = len(m.Index) + m.SampleOff
 	}
 	for i, v := range m.Index {
 		if i < index {
@@ -89,7 +122,7 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 			return err
 		}
 		meta.Context = ctx
-		j, err := json.MarshalIndent(meta, "", "  ")
+		j, err := marshal(meta)
 		if err != nil {
 			return err
 		}
@@ -102,7 +135,7 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 			return err
 		}
 		man.Context = ctx
-		j, err = json.MarshalIndent(man, "", "  ")
+		j, err = marshal(man)
 		if err != nil {
 			return err
 		}
@@ -125,7 +158,7 @@ func (m *Meta) Sample(index, sample int, target string, actions ...Action) error
 				return err
 			}
 			log.Context = ctx
-			j, err = json.MarshalIndent(log, "", "  ")
+			j, err = marshal(log)
 			if err != nil {
 				return err
 			}

@@ -1,3 +1,17 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package meta
 
 import (
@@ -15,12 +29,13 @@ type Context map[string]Field
 type Field interface{}
 
 // Obj is a json object. Used with @id/@type in @context.
-// Can also be used to generate generic objects e.g. Agents in metadata are Objs.
+// Can also be used to generate generic objects e.g. Agents and containers in metadata are Objs
 type Obj struct {
 	ID        string `json:"@id,omitempty"`
 	Typ       string `json:"@type,omitempty"`
 	Container string `json:"@container,omitempty"`
 	Name      string `json:"name,omitempty"`
+	Title     string `json:"title,omitempty"`
 }
 
 // populate reads v as json and infers the @context necessary to describe this json file.

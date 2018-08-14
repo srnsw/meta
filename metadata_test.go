@@ -1,3 +1,17 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package meta
 
 import (
@@ -8,9 +22,12 @@ import (
 func TestMetadata(t *testing.T) {
 	m := NewMetadata(0, "Business Name Registration - Duntryleague Country Club")
 	m.AddType("http://schema.org/Movie")
+	m.Description = "A very nice record"
+	m.Creator = []Agent{MakeAgency("Office of Fair Trading", 0), MakePerson("Michael Bruce Baird", 288)}
 	m.Created = NewDate("1902-01-01")
 	m.Modified = NewDate("1903-02-02")
-	m.Creator = []Agent{MakeAgency("Office of Fair Trading", 0), MakePerson("Michael Bruce Baird", 288)}
+	m.AgencyID = "TRAN.001.890"
+	m.Provenance = "https://twitter.com/MelGibson"
 	m.Source = "https://twitter.com/"
 	m.IsPartOf = "Exhibits 50. The trials of Mel Gibson"
 	m.Series = ToSeries(21404)
@@ -50,5 +67,18 @@ func TestMetadataConst(t *testing.T) {
 	m.Context = ctx
 	if err = compare(m, filepath.Join("project-0", "0", "metadata.json")); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestAppendAgent(t *testing.T) {
+	agents := AppendAgent(nil, MakeSDOPerson("Richard Lehane"))
+	agents = AppendAgent(agents, MakeOrganization("The ANZ Bank"))
+	agents = AppendAgent(agents, MakeSDOPerson("Prince Richard"))
+	if slc, ok := agents.([]Agent); !ok {
+		t.Fatalf("Expecting a slice of agents, got %t", agents)
+	} else {
+		if len(slc) != 3 {
+			t.Fatalf("Expecting 3 agents, got %d", len(slc))
+		}
 	}
 }

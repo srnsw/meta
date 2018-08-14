@@ -1,3 +1,17 @@
+// Copyright 2018 State of New South Wales through the State Archives and Records Authority of NSW
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package meta
 
 import (
@@ -90,6 +104,17 @@ func MakeAgent(name, id, typ string) Agent {
 	}
 }
 
+// AppendAgent is a helper func to add agents to a slice of agents
+func AppendAgent(a, b Agent) Agent {
+	if a == nil {
+		return b
+	}
+	if agents, ok := a.([]Agent); ok {
+		return append(agents, b)
+	}
+	return []Agent{a, b}
+}
+
 // MakeSDOPerson creates an Agent that is of @type schema.org/Person. Does not set an @id.
 func MakeSDOPerson(name string) Agent {
 	return MakeAgent(name, "", "http://schema.org/Person")
@@ -157,4 +182,28 @@ func ReferenceObject(i int) string {
 // This reference is swapped for a UUID by the migrate tool.
 func ReferenceMigration(i int) string {
 	return ToRef(i, "mig")
+}
+
+func MakeContainer(title, id, typ string) Container {
+	return Obj{
+		ID:    id,
+		Typ:   typ,
+		Title: title,
+	}
+}
+
+func MarkupSet(title string) Container {
+	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/MarkupSet")
+}
+
+func Exhibit(title string) Container {
+	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/Exhibit")
+}
+
+func Bundle(title string) Container {
+	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/Bundle")
+}
+
+func Email(id string) Container {
+	return MakeContainer("", id, "https://schema.org/EmailMessage")
 }
