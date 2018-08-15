@@ -28,6 +28,8 @@ type Metadata struct {
 	Provenance        string    `json:"provenance,omitempty"`
 	Source            VarStr    `json:"source,omitempty"`
 	IsPartOf          Container `json:"isPartOf,omitempty"`
+	DeliveryMethod    string    `json:"deliveryMethod,omitempty"`
+	DocumentType      string    `json:"documentType,omitempty"` // document genre e.g. Research, Correspondence
 	Series            string    `json:"series,omitempty"`
 	Consignment       string    `json:"consignment,omitempty"`
 	DisposalRule      Disposal  `json:"disposalRule,omitempty"`
@@ -108,17 +110,19 @@ var metadataContext = Context{
 		ID:  "http://purl.org/dc/terms/created",
 		Typ: "http://www.w3.org/2001/XMLSchema#date",
 	},
-	"creator":     "http://purl.org/dc/terms/creator",
-	"description": "http://purl.org/dc/terms/description",
-	"director":    "http://schema.org/director",
+	"creator":        "http://purl.org/dc/terms/creator",
+	"deliveryMethod": "http://schema.org/deliveryMethod",
+	"description":    "http://purl.org/dc/terms/description",
+	"director":       "http://schema.org/director",
 	"disposalRule": Obj{
 		ID:  "http://records.nsw.gov.au/terms/disposalRule",
 		Typ: "http://records.nsw.gov.au/terms/DisposalRule",
 	},
-	"duration":  "http://schema.org/duration",
-	"isPartOf":  "http://purl.org/dc/terms/isPartOf",
-	"language":  "http://schema.org/inLanguage",
-	"legalName": "http://schema.org/legalName",
+	"documentType": "http://www.agls.gov.au/agls/terms/documentType",
+	"duration":     "http://schema.org/duration",
+	"isPartOf":     "http://purl.org/dc/terms/isPartOf",
+	"language":     "http://schema.org/inLanguage",
+	"legalName":    "http://schema.org/legalName",
 	"migration": Obj{
 		ID:  "http://records.nsw.gov.au/terms/migration",
 		Typ: "@id",

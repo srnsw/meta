@@ -30,6 +30,8 @@ func TestMetadata(t *testing.T) {
 	m.Provenance = "https://twitter.com/MelGibson"
 	m.Source = "https://twitter.com/"
 	m.IsPartOf = "Exhibits 50. The trials of Mel Gibson"
+	m.DeliveryMethod = "AUSTRALIA POST"
+	m.DocumentType = "Report"
 	m.Series = ToSeries(21404)
 	m.Consignment = ToConsignment(189087)
 	m.DisposalRule = DisposalRule{Authority: "DA48", Class: "1.1.1.2"}
