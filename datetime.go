@@ -97,6 +97,9 @@ func ParseDateLayout(layout, d string) (*W3CDate, error) {
 
 // WrapDate allows you to create a *W3CDate (with YMD precision) when you already have a *time.Time
 func WrapDate(t time.Time) *W3CDate {
+	if t.IsZero() {
+		return nil
+	}
 	return &W3CDate{0, t}
 }
 
