@@ -207,3 +207,7 @@ func Bundle(title string) Container {
 func Email(id string) Container {
 	return MakeContainer("", id, "https://schema.org/EmailMessage")
 }
+
+func FileContainer(title string) Container {
+	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/Container")
+}
