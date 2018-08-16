@@ -19,6 +19,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // ToID is a helper function that turns an integer identififier into a string @id
@@ -147,7 +148,7 @@ func ToConsignment(i int) string {
 
 // MakeBusiness returns a Thing of @type schema.org/Organization and sets the supplied fields.
 // A variable number of proprietors can be supplied and these will be set as a slice of Organizations.
-func MakeBusiness(legalName, commencedTrading, ceasedTrading, renewalDueDate, registrationNumber, abn string, proprietors ...string) Thing {
+func MakeBusiness(legalName, registrationNumber, abn string, commencedTrading, ceasedTrading, renewalDueDate time.Time, proprietors ...string) Thing {
 	var props Agent
 	if len(proprietors) > 0 {
 		if len(proprietors) > 1 {
@@ -162,9 +163,9 @@ func MakeBusiness(legalName, commencedTrading, ceasedTrading, renewalDueDate, re
 	return Business{
 		Typ:                "http://schema.org/Organization",
 		LegalName:          legalName,
-		CommencedTrading:   NewDate(commencedTrading),
-		CeasedTrading:      NewDate(ceasedTrading),
-		RenewalDueDate:     NewDate(renewalDueDate),
+		CommencedTrading:   WrapDate(commencedTrading),
+		CeasedTrading:      WrapDate(ceasedTrading),
+		RenewalDueDate:     WrapDate(renewalDueDate),
 		RegistrationNumber: registrationNumber,
 		ABN:                abn,
 		Proprietor:         props,

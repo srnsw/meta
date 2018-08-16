@@ -17,6 +17,7 @@ package meta
 import (
 	"path/filepath"
 	"testing"
+	"time"
 )
 
 func TestMetadata(t *testing.T) {
@@ -41,7 +42,10 @@ func TestMetadata(t *testing.T) {
 	m.Director = "Mel Gibson"
 	m.Actor = "Mel Gibson"
 	m.ProductionCompany = "Icon Films"
-	m.About = MakeBusiness("Duntryleague Country Club", "1000-01-01", "1999-03-29", "1998-11-30", "A0369711", "Unknown", "The Orange Golf Club Ltd")
+	commencedTrading, _ := time.Parse(w3cymd, "1990-01-01")
+	ceasedTrading, _ := time.Parse(w3cymd, "1999-03-29")
+	renewalDueDate, _ := time.Parse(w3cymd, "1998-11-30")
+	m.About = MakeBusiness("Duntryleague Country Club", "A0369711", "Unknown", commencedTrading, ceasedTrading, renewalDueDate, "The Orange Golf Club Ltd")
 	ctx, err := populate(metadataContext, m)
 	if err != nil {
 		t.Fatal(err)
