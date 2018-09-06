@@ -92,6 +92,23 @@ func copyVarStr(v VarStr) VarStr {
 	return ret
 }
 
+func SetVarStr(v VarStr) VarStr {
+	if v == nil {
+		return nil
+	}
+	if str, ok := v.(string); ok {
+		if str == "" {
+			return nil
+		}
+		return str
+	}
+	strs := v.([]string)
+	if len(strs) == 0 {
+		return nil
+	}
+	return strs
+}
+
 // MakeAgent returns an Agent with the given name, @id and @type.
 // If @id and @type aren't given, the Agent is a simple string e.g. "Richard Lehane"
 func MakeAgent(name, id, typ string) Agent {
