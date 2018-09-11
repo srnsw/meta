@@ -15,6 +15,7 @@
 package meta
 
 import (
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -23,6 +24,8 @@ import (
 	"time"
 
 	"github.com/richardlehane/siegfried"
+	"github.com/richardlehane/siegfried/pkg/config"
+	"github.com/richardlehane/siegfried/pkg/decompress"
 	"github.com/richardlehane/siegfried/pkg/pronom"
 	"github.com/srnsw/wincommands"
 )
@@ -142,6 +145,116 @@ func Progress(i int) Action {
 			j = 0
 			log.Printf("Processing number %d (%s)\n", n, index)
 		}
+		return nil
+	}
+}
+
+// Decompress takes a path to a siegfried signature file and a pathfunc.
+// The pathfunc returns the directory that will be joined to the filename out of the manifest.
+// It returns an action that:
+// - checks if a PUID (assuming a single version 0/ file 0) is a compressed type and recursively decompresses,
+// - adding new files to manifest and copying them to output.
+func Decompress(sfpath string, pathfunc func(m *Meta, index string) string) Action {
+	var sf *siegfried.Siegfried
+	var err error
+	if sfpath != "" {
+		sf, err = siegfried.Load(sfpath)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return func(m *Meta, target, index string) error {
+		man := m.Manifest[index]
+		if len(man.Versions) != 1 || len(man.Versions[0].Files) != 1 { // only operate on manifests with a single version/file
+			return nil
+		}
+		if config.IsArchive(strings.TrimPrefix(man.Versions[0].Files[0].PUID, "http://www.nationalarchives.gov.uk/pronom/")) == 0 {
+			return nil
+		}
+		files := make([]File, 0, 10)
+		var idRdr func(rdr io.Reader, name, mime string, sz int64) error
+		idRdr = func(rdr io.Reader, name, mime string, sz int64) error {
+			buf, err := sf.Buffer(rdr)
+			defer sf.Put(buf)
+			if err != nil {
+				return err
+			}
+			ids, err := sf.IdentifyBuffer(buf, nil, name, mime)
+			if err != nil {
+				return err
+			}
+			if name != "" { // if we are not looking at the root file
+				fname := strings.TrimPrefix(name, "#")
+				path := fname
+				dir := filepath.Join(pathfunc(m, index), "versions", "1")
+				if strings.Contains(fname, "#") {
+					bits := strings.Split(fname, "#")
+					for i, v := range bits[:len(bits)-1] {
+						bits[i] = strings.Replace(v, ".", "_", -1)
+					}
+					fname = bits[len(bits)-1]
+					path = strings.Join(bits, "/")
+					dir = filepath.Join(dir, filepath.Join(bits[:len(bits)-1]...))
+				}
+				os.MkdirAll(dir, 0666)
+				f, err := os.Create(filepath.Join(dir, fname))
+				if err != nil {
+					return err
+				}
+				_, err = io.Copy(f, buf.Reader())
+				f.Close()
+				if err != nil {
+					return err
+				}
+				fi, err := os.Stat(filepath.Join(dir, fname))
+				if err != nil {
+					return err
+				}
+				t := fi.ModTime()
+				fmt := [2]string{"UNKNOWN", ""}
+				if len(ids) == 1 {
+					fmt[0] = ids[0].String()
+					fmt[1] = ids[0].(pronom.Identification).MIME
+				}
+				files = append(files, File{
+					Name:     path,
+					Size:     fi.Size(),
+					Modified: &t,
+					MIME:     fmt[1],
+					PUID:     ToPUID(fmt[0]),
+				})
+			}
+			arc := decompress.IsArc(ids)
+			if arc > 0 {
+				dec, err := decompress.New(arc, buf, name, sz)
+				if err != nil {
+					return err
+				}
+				for err = dec.Next(); err == nil; err = dec.Next() {
+					err = idRdr(dec.Reader(), dec.Path(), dec.MIME(), dec.Size()) // recurse on the contents of the archive
+					if err != nil {
+						return err
+					}
+				}
+				return err
+			}
+			return nil
+		}
+		path := filepath.Join(pathfunc(m, index), "versions", "0", man.Versions[0].Files[0].Name)
+		fi, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+		f, err := os.Open(path)
+		defer f.Close()
+		if err != nil {
+			return err
+		}
+		err = idRdr(f, "", "", fi.Size())
+		if err != nil {
+			return err
+		}
+		man.AddVersion(files)
 		return nil
 	}
 }
