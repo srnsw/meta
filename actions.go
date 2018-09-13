@@ -154,7 +154,7 @@ func Progress(i int) Action {
 // It returns an action that:
 // - checks if a PUID (assuming a single version 0/ file 0) is a compressed type and recursively decompresses,
 // - adding new files to manifest and copying them to output.
-func Decompress(sfpath string, pathfunc func(m *Meta, index string) string) Action {
+func Decompress(sfpath string) Action {
 	var sf *siegfried.Siegfried
 	var err error
 	if sfpath != "" {
@@ -165,6 +165,7 @@ func Decompress(sfpath string, pathfunc func(m *Meta, index string) string) Acti
 	}
 	return func(m *Meta, target, index string) error {
 		man := m.Manifest[index]
+		dir := filepath.Join(target, strconv.Itoa(GetIndex(m, index)), "versions", "1")
 		if len(man.Versions) != 1 || len(man.Versions[0].Files) != 1 { // only operate on manifests with a single version/file
 			return nil
 		}
@@ -186,7 +187,6 @@ func Decompress(sfpath string, pathfunc func(m *Meta, index string) string) Acti
 			if name != "" { // if we are not looking at the root file
 				fname := strings.TrimPrefix(name, "#")
 				path := fname
-				dir := filepath.Join(pathfunc(m, index), "versions", "1")
 				if strings.Contains(fname, "#") {
 					bits := strings.Split(fname, "#")
 					for i, v := range bits[:len(bits)-1] {
@@ -240,7 +240,7 @@ func Decompress(sfpath string, pathfunc func(m *Meta, index string) string) Acti
 			}
 			return nil
 		}
-		path := filepath.Join(pathfunc(m, index), "versions", "0", man.Versions[0].Files[0].Name)
+		path := filepath.Join(target, strconv.Itoa(GetIndex(m, index)), "versions", "0", man.Versions[0].Files[0].Name)
 		fi, err := os.Stat(path)
 		if err != nil {
 			return err
