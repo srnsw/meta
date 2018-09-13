@@ -229,13 +229,3 @@ func Email(id string) Container {
 func FileContainer(title string) Container {
 	return MakeContainer(title, "", "http://records.nsw.gov.au/terms/Container")
 }
-
-// GetIndex returns the location in the index slice of a particular index item
-func GetIndex(m *Meta, index string) int {
-	for idx, v := range m.Index {
-		if v == index {
-			return idx
-		}
-	}
-	return -1
-}

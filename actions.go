@@ -165,13 +165,13 @@ func Decompress(sfpath string) Action {
 	}
 	return func(m *Meta, target, index string) error {
 		man := m.Manifest[index]
-		dir := filepath.Join(target, strconv.Itoa(GetIndex(m, index)), "versions", "1")
 		if len(man.Versions) != 1 || len(man.Versions[0].Files) != 1 { // only operate on manifests with a single version/file
 			return nil
 		}
 		if config.IsArchive(strings.TrimPrefix(man.Versions[0].Files[0].PUID, "http://www.nationalarchives.gov.uk/pronom/")) == 0 {
 			return nil
 		}
+		basedir := filepath.Join(target, "versions", "1")
 		files := make([]File, 0, 10)
 		var idRdr func(rdr io.Reader, name, mime string, sz int64) error
 		idRdr = func(rdr io.Reader, name, mime string, sz int64) error {
@@ -184,46 +184,6 @@ func Decompress(sfpath string) Action {
 			if err != nil {
 				return err
 			}
-			if name != "" { // if we are not looking at the root file
-				fname := strings.TrimPrefix(name, "#")
-				path := fname
-				if strings.Contains(fname, "#") {
-					bits := strings.Split(fname, "#")
-					for i, v := range bits[:len(bits)-1] {
-						bits[i] = strings.Replace(v, ".", "_", -1)
-					}
-					fname = bits[len(bits)-1]
-					path = strings.Join(bits, "/")
-					dir = filepath.Join(dir, filepath.Join(bits[:len(bits)-1]...))
-				}
-				os.MkdirAll(dir, 0666)
-				f, err := os.Create(filepath.Join(dir, fname))
-				if err != nil {
-					return err
-				}
-				_, err = io.Copy(f, buf.Reader())
-				f.Close()
-				if err != nil {
-					return err
-				}
-				fi, err := os.Stat(filepath.Join(dir, fname))
-				if err != nil {
-					return err
-				}
-				t := fi.ModTime()
-				fmt := [2]string{"UNKNOWN", ""}
-				if len(ids) == 1 {
-					fmt[0] = ids[0].String()
-					fmt[1] = ids[0].(pronom.Identification).MIME
-				}
-				files = append(files, File{
-					Name:     path,
-					Size:     fi.Size(),
-					Modified: &t,
-					MIME:     fmt[1],
-					PUID:     ToPUID(fmt[0]),
-				})
-			}
 			arc := decompress.IsArc(ids)
 			if arc > 0 {
 				dec, err := decompress.New(arc, buf, name, sz)
@@ -232,15 +192,54 @@ func Decompress(sfpath string) Action {
 				}
 				for err = dec.Next(); err == nil; err = dec.Next() {
 					err = idRdr(dec.Reader(), dec.Path(), dec.MIME(), dec.Size()) // recurse on the contents of the archive
-					if err != nil {
+					if err != nil && err != io.EOF {
 						return err
 					}
 				}
+				return nil
+			}
+			fname := strings.TrimPrefix(name, "#")
+			path := fname
+			dir := basedir
+			if strings.Contains(fname, "#") {
+				bits := strings.Split(fname, "#")
+				for i, v := range bits[:len(bits)-1] {
+					bits[i] = strings.Replace(v, ".", "_", -1)
+				}
+				fname = bits[len(bits)-1]
+				path = strings.Join(bits, "/")
+				dir = filepath.Join(dir, filepath.Join(bits[:len(bits)-1]...))
+			}
+			os.MkdirAll(dir, 0666)
+			f, err := os.Create(filepath.Join(dir, fname))
+			if err != nil {
 				return err
 			}
+			_, err = io.Copy(f, buf.Reader())
+			f.Close()
+			if err != nil {
+				return err
+			}
+			fi, err := os.Stat(filepath.Join(dir, fname))
+			if err != nil {
+				return err
+			}
+			t := fi.ModTime()
+			fmt := [2]string{"UNKNOWN", ""}
+			if len(ids) == 1 {
+				fmt[0] = ids[0].String()
+				fmt[1] = ids[0].(pronom.Identification).MIME
+			}
+			files = append(files, File{
+				Name:     path,
+				Size:     fi.Size(),
+				Modified: &t,
+				MIME:     fmt[1],
+				PUID:     ToPUID(fmt[0]),
+			})
 			return nil
 		}
-		path := filepath.Join(target, strconv.Itoa(GetIndex(m, index)), "versions", "0", man.Versions[0].Files[0].Name)
+		path := filepath.Join(target, "versions", "0", man.Versions[0].Files[0].Name)
 		fi, err := os.Stat(path)
 		if err != nil {
 			return err
@@ -251,10 +250,23 @@ func Decompress(sfpath string) Action {
 			return err
 		}
 		err = idRdr(f, "", "", fi.Size())
-		if err != nil {
+		if err != nil && err != io.EOF {
 			return err
 		}
 		man.AddVersion(files)
+		// now update access rules that have v0f0 as display target
+		fts := make([]FileTarget, len(files))
+		for i := range fts {
+			fts[i][0] = 1
+			fts[i][1] = i
+		}
+		blank := FileTarget{}
+		for i, ar := range man.AccessRules {
+			str, ok := ar.Display.(string)
+			if ok && str == blank.String() {
+				man.AccessRules[i].Display = ReferenceFiles(fts)
+			}
+		}
 		return nil
 	}
 }
