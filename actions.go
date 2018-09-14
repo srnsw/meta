@@ -210,6 +210,11 @@ func Decompress(sfpath string) Action {
 				path = strings.Join(bits, "/")
 				dir = filepath.Join(dir, filepath.Join(bits[:len(bits)-1]...))
 			}
+			var extradirs string
+			extradirs, fname = filepath.Split(fname)
+			if len(extradirs) > 0 {
+				dir = filepath.Join(dir, extradirs)
+			}
 			os.MkdirAll(dir, 0666)
 			f, err := os.Create(filepath.Join(dir, fname))
 			if err != nil {
