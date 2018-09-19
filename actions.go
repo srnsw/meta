@@ -163,7 +163,7 @@ func Decompress(sfpath string) Action {
 			panic(err)
 		}
 	}
-	repl := strings.NewReplacer(".zip", "_zip", ".tar", "_tar", ".gz", "_gz", ".arc", "_arc", ".warc", "_warc")
+	repl := strings.NewReplacer(".zip#", "_zip/")
 	return func(m *Meta, target, index string) error {
 		man := m.Manifest[index]
 		if len(man.Versions) != 1 || len(man.Versions[0].Files) != 1 { // only operate on manifests with a single version/file
@@ -178,13 +178,10 @@ func Decompress(sfpath string) Action {
 		idRdr = func(rdr io.Reader, name, mime string, sz int64) error {
 			buf, err := sf.Buffer(rdr)
 			defer sf.Put(buf)
-			if err != nil {
+			if err != nil && err.Error() != "empty source" {
 				return err
 			}
-			ids, err := sf.IdentifyBuffer(buf, nil, name, mime)
-			if err != nil {
-				return err
-			}
+			ids, _ := sf.IdentifyBuffer(buf, nil, name, mime)
 			arc := decompress.IsArc(ids)
 			if arc > 0 {
 				dec, err := decompress.New(arc, buf, name, sz)
@@ -202,15 +199,7 @@ func Decompress(sfpath string) Action {
 			fname := strings.TrimPrefix(name, "#")
 			path := fname
 			dir := basedir
-			if strings.Contains(fname, "#") { // if we are multiple zips deep
-				bits := strings.Split(fname, "#")
-				for i, v := range bits[:len(bits)-1] {
-					bits[i] = repl.Replace(v)
-				}
-				fname = bits[len(bits)-1]
-				path = strings.Join(bits, "/")
-				dir = filepath.Join(dir, filepath.Join(bits[:len(bits)-1]...))
-			}
+			fname = repl.Replace(fname)
 			var extradirs string
 			extradirs, fname = filepath.Split(fname)
 			if len(extradirs) > 0 {
@@ -222,6 +211,9 @@ func Decompress(sfpath string) Action {
 				return err
 			}
 			_, err = io.Copy(f, buf.Reader())
+			if err != nil && err.Error() == "empty source" {
+				err = nil
+			}
 			f.Close()
 			if err != nil {
 				return err
