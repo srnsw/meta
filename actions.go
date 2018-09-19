@@ -163,6 +163,7 @@ func Decompress(sfpath string) Action {
 			panic(err)
 		}
 	}
+	repl := strings.NewReplacer(".zip", "_zip", ".tar", "_tar", ".gz", "_gz", ".arc", "_arc", ".warc", "_warc")
 	return func(m *Meta, target, index string) error {
 		man := m.Manifest[index]
 		if len(man.Versions) != 1 || len(man.Versions[0].Files) != 1 { // only operate on manifests with a single version/file
@@ -201,10 +202,10 @@ func Decompress(sfpath string) Action {
 			fname := strings.TrimPrefix(name, "#")
 			path := fname
 			dir := basedir
-			if strings.Contains(fname, "#") {
+			if strings.Contains(fname, "#") { // if we are multiple zips deep
 				bits := strings.Split(fname, "#")
 				for i, v := range bits[:len(bits)-1] {
-					bits[i] = strings.Replace(v, ".", "_", -1)
+					bits[i] = repl.Replace(v)
 				}
 				fname = bits[len(bits)-1]
 				path = strings.Join(bits, "/")
