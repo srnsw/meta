@@ -49,18 +49,18 @@ func ReferenceLog(i int) string {
 
 var logContext = Context{
 	"agent": Obj{
-		ID:  "https://www.w3.org/ns/prov#wasAssociatedWith",
-		Typ: "https://www.w3.org/ns/prov#Agent",
+		ID:  "http://www.w3.org/ns/prov#wasAssociatedWith",
+		Typ: "http://www.w3.org/ns/prov#Agent",
 	},
 	"detail": "http://id.loc.gov/vocabulary/preservation/hasNote",
 	"endTime": Obj{
-		ID:  "https://www.w3.org/ns/prov#endedAtTime",
+		ID:  "http://www.w3.org/ns/prov#endedAtTime",
 		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
 	},
 	"name":            "http://schema.org/name",
-	"softwareVersion": "https://schema.org/softwareVersion",
+	"softwareVersion": "http://schema.org/softwareVersion",
 	"startTime": Obj{
-		ID:  "https://www.w3.org/ns/prov#startedAtTime",
+		ID:  "http://www.w3.org/ns/prov#startedAtTime",
 		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
 	},
 }

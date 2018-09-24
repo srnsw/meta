@@ -156,7 +156,7 @@ func MakeAgency(name string, id int) Agent {
 // MakeSoftware creates an Agent that is of @type https://schema.org/SoftwareApplication. Sets the version to the supplied value.
 func MakeSoftware(name, version string) Agent {
 	return Obj{
-		Typ:             "https://schema.org/SoftwareApplication",
+		Typ:             "http://schema.org/SoftwareApplication",
 		Name:            name,
 		SoftwareVersion: version,
 	}

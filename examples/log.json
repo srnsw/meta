@@ -10,17 +10,17 @@
   },
   "@context": {
     "agent": {
-      "@id": "https://www.w3.org/ns/prov#wasAssociatedWith",
-      "@type": "https://www.w3.org/ns/prov#Agent"
+      "@id": "http://www.w3.org/ns/prov#wasAssociatedWith",
+      "@type": "http://www.w3.org/ns/prov#Agent"
     },
     "detail": "http://id.loc.gov/vocabulary/preservation/hasNote",
     "endTime": {
-      "@id": "https://www.w3.org/ns/prov#endedAtTime",
+      "@id": "http://www.w3.org/ns/prov#endedAtTime",
       "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
     },
     "name": "http://schema.org/name",
     "startTime": {
-      "@id": "https://www.w3.org/ns/prov#startedAtTime",
+      "@id": "http://www.w3.org/ns/prov#startedAtTime",
       "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
     }
   }
