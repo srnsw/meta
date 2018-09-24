@@ -153,6 +153,15 @@ func MakeAgency(name string, id int) Agent {
 	return MakeAgent(name, ToID(id, "http://records.nsw.gov.au/agencies/"), "http://records.nsw.gov.au/terms/Agency")
 }
 
+// MakeSoftware creates an Agent that is of @type https://schema.org/SoftwareApplication. Sets the version to the supplied value.
+func MakeSoftware(name, version string) Agent {
+	return Obj{
+		Typ:             "https://schema.org/SoftwareApplication",
+		Name:            name,
+		SoftwareVersion: version,
+	}
+}
+
 // ToSeries turns a series number into an IRI @id
 func ToSeries(i int) string {
 	return ToID(i, "http://records.nsw.gov.au/series/")

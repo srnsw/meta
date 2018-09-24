@@ -57,7 +57,8 @@ var logContext = Context{
 		ID:  "https://www.w3.org/ns/prov#endedAtTime",
 		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
 	},
-	"name": "http://schema.org/name",
+	"name":            "http://schema.org/name",
+	"softwareVersion": "https://schema.org/softwareVersion",
 	"startTime": Obj{
 		ID:  "https://www.w3.org/ns/prov#startedAtTime",
 		Typ: "http://www.w3.org/2001/XMLSchema#dateTime",
