@@ -8,4 +8,6 @@ The Meta package:
   - contains a set of generic metadata loaders and actions that can be used across projects
   - contains Meta cmd, a command line tool that demonstrates the generic loaders and can be used for very simple projects.
 
+See the docs folder for more detail about the Digital State Archive storage and manifest file specifications.
+
   
